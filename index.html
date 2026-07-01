@@ -72,10 +72,8 @@ ul{list-style:none;}
 body.cursor-active #cursor-dot{opacity:1;}
 body.cursor-active #cursor-ring{opacity:.3;}
 body.cursor-active #cursor-ring.hovering{opacity:.5;}
-@media (hover:none), (pointer:coarse){
-  #cursor-dot,#cursor-ring{display:none;}
-  body,button{cursor:auto;}
-}
+/* on touch devices the heart fades in on touch and fades out a beat after release */
+body.cursor-touch-idle #cursor-dot,body.cursor-touch-idle #cursor-ring{opacity:0;transition:opacity .5s ease;}
 
 /* ---------- background blobs ---------- */
 .bg-blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
@@ -538,6 +536,31 @@ window.addEventListener('mousemove',e=>{
 },{passive:true});
 function loop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);}
 loop();
+
+// ---------- same heart cursor, but for touch (появляется в точке касания) ----------
+let touchIdleTimer=null;
+function moveCursorTo(x,y){
+  mx=x;my=y;
+  dot.style.left=x+'px';dot.style.top=y+'px';
+  if(!cursorAwake){cursorAwake=true;rx=x;ry=y;}
+  document.body.classList.remove('cursor-touch-idle');
+  document.body.classList.add('cursor-active');
+}
+window.addEventListener('touchstart',e=>{
+  const t=e.touches[0]; if(!t) return;
+  clearTimeout(touchIdleTimer);
+  moveCursorTo(t.clientX,t.clientY);
+},{passive:true});
+window.addEventListener('touchmove',e=>{
+  const t=e.touches[0]; if(!t) return;
+  moveCursorTo(t.clientX,t.clientY);
+},{passive:true});
+function releaseTouchCursor(){
+  clearTimeout(touchIdleTimer);
+  touchIdleTimer=setTimeout(()=>document.body.classList.add('cursor-touch-idle'),500);
+}
+window.addEventListener('touchend',releaseTouchCursor,{passive:true});
+window.addEventListener('touchcancel',releaseTouchCursor,{passive:true});
 document.querySelectorAll('a,button,.work-card,.service-card,.acc-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
   el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
