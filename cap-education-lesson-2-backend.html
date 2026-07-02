@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAP Education — Урок 2. Vibe-coding: оживляем бота через ИИ</title>
+<meta name="description" content="Демо интерактивного урока для CAP Education: конструктор промта, эмулятор Telegram-бота, поиск бага от ИИ, флеш-карточки, тест и домашнее задание.">
+<style>
+  html,body{margin:0;padding:0;background:#f1f5f9;}
+  body{padding:32px 16px 64px;box-sizing:border-box;}
+</style>
+</head>
+<body>
+
+<!-- ============================================================= -->
+<!-- CAP EDUCATION · БЭКЕНД-РАЗРАБОТКА 2026 · УРОК 2 (RU)          -->
+<!-- Vibe-coding: первый Telegram-бот через ИИ.                    -->
+<!-- Цвет курса — изумрудный терминал. ССЫЛКИ: data-video / data-slides -->
+<!-- ============================================================= -->
+<div class="cap-lesson cap-lesson--b2" style="--accent:#059669; --accent-dark:#047857; --accent-soft:#d1fae5; --accent-glow:rgba(5,150,105,.35);">
+<style>
+.cap-lesson{--card:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --radius:18px; --shadow:0 10px 30px rgba(15,23,42,.08);
+  font-family:'Inter','Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; color:var(--ink); line-height:1.65; font-size:17px;
+  max-width:860px; margin:0 auto; padding:4px; box-sizing:border-box; -webkit-font-smoothing:antialiased;}
+.cap-lesson *{box-sizing:border-box;}
+.cap-lesson h1,.cap-lesson h2,.cap-lesson h3{line-height:1.25; margin:0;}
+.cap-lesson .ce-hero{position:relative; overflow:hidden; border-radius:28px; padding:46px 36px 40px; color:#fff;
+  background:linear-gradient(120deg,#022c22 0%,#047857 30%,#059669 55%,#0d9488 80%,#047857 100%); background-size:300% 300%;
+  animation:ceGrad 14s ease infinite; box-shadow:0 26px 60px var(--accent-glow);}
+@keyframes ceGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.cap-lesson .ce-hero::after{content:""; position:absolute; right:-50px; top:-70px; width:280px; height:280px; background:radial-gradient(circle,rgba(255,255,255,.24),transparent 70%); border-radius:50%; animation:ceFloat 7s ease-in-out infinite; z-index:1;}
+.cap-lesson .ce-hero::before{content:""; position:absolute; left:-50px; bottom:-90px; width:240px; height:240px; background:radial-gradient(circle,rgba(52,211,153,.45),transparent 70%); border-radius:50%; animation:ceFloat 9.5s ease-in-out infinite reverse; z-index:1;}
+@keyframes ceFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes cePulse{0%,100%{box-shadow:0 8px 20px var(--accent-glow)}50%{box-shadow:0 10px 34px rgba(5,150,105,.6)}}
+.cap-lesson .ce-badge{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25); backdrop-filter:blur(6px); padding:8px 16px; border-radius:999px; font-size:13px; font-weight:700; position:relative; z-index:2; color:#fff !important;}
+.cap-lesson .ce-hero h1{font-size:34px; font-weight:800; margin:16px 0 8px; position:relative; z-index:2; letter-spacing:-.6px; line-height:1.14; text-shadow:0 3px 24px rgba(0,0,0,.18); color:#fff !important;}
+.cap-lesson .ce-hero p{margin:0; opacity:.96; font-size:17px; position:relative; z-index:2; max-width:600px; color:#fff !important;}
+.cap-lesson .ce-meta{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; position:relative; z-index:2;}
+.cap-lesson .ce-meta span{background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.18); padding:9px 15px; border-radius:12px; font-size:14px; font-weight:600; backdrop-filter:blur(4px); color:#fff !important;}
+.cap-lesson .ce-sec{margin:30px 0 0;}
+.cap-lesson .ce-sec-title{display:flex; align-items:center; gap:12px; font-size:22px; font-weight:800; margin-bottom:16px;}
+.cap-lesson .ce-sec-title .ce-num{flex:0 0 auto; width:36px; height:36px; border-radius:11px; background:var(--accent-soft); color:var(--accent-dark); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800;}
+.cap-lesson .ce-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px; box-shadow:var(--shadow); margin-bottom:16px;}
+.cap-lesson .ce-card p{margin:0 0 12px;} .cap-lesson .ce-card p:last-child{margin-bottom:0;}
+.cap-lesson .ce-goals{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.cap-lesson .ce-goal{background:#fff; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:14px; padding:14px 16px; font-size:15px; box-shadow:0 4px 12px rgba(15,23,42,.04);}
+.cap-lesson .ce-video{position:relative; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); background:#0f172a; aspect-ratio:16/9; box-shadow:var(--shadow);}
+.cap-lesson .ce-video iframe{position:absolute; inset:0; width:100%; height:100%; border:0;}
+.cap-lesson .ce-empty{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#94a3b8; font-size:15px; gap:6px; text-align:center; padding:20px;}
+.cap-lesson .ce-vcap{font-size:13px; color:var(--muted); margin-top:8px;}
+.cap-lesson .ce-slidebtns{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+.cap-lesson .ce-slidebtns a{display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-weight:700; font-size:15px; padding:11px 20px; border-radius:12px; background:var(--accent); color:#fff; box-shadow:0 8px 20px var(--accent-glow); transition:transform .15s;}
+.cap-lesson .ce-slidebtns a:hover{transform:translateY(-2px);}
+/* pdf flip viewer */
+.cap-lesson .ce-pdf{position:absolute; inset:0; background:#0f172a; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.cap-lesson .ce-pdf canvas{max-width:100%; max-height:100%; display:block; box-shadow:0 4px 22px rgba(0,0,0,.45);}
+.cap-lesson .ce-pdf-nav{position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border:none; border-radius:50%; background:rgba(255,255,255,.92); color:#0f172a; font-size:28px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,.3); transition:background .15s, transform .15s; z-index:3; font-family:inherit; padding:0;}
+.cap-lesson .ce-pdf-nav:hover{background:#fff; transform:translateY(-50%) scale(1.08);}
+.cap-lesson .ce-pdf-nav.prev{left:12px;} .cap-lesson .ce-pdf-nav.next{right:12px;}
+.cap-lesson .ce-pdf-nav:disabled{opacity:.3; cursor:default; transform:translateY(-50%);}
+.cap-lesson .ce-pdf-count{position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(15,23,42,.82); color:#fff; font-size:13px; font-weight:600; padding:5px 13px; border-radius:999px; z-index:3;}
+.cap-lesson .ce-pdf-loading{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:15px; text-align:center; padding:20px;}
+.cap-lesson .ce-callout{border-radius:14px; padding:16px 18px 16px 50px; position:relative; margin:14px 0; font-size:16px;}
+.cap-lesson .ce-callout .ce-ico{position:absolute; left:16px; top:15px; font-size:20px;}
+.cap-lesson .ce-hook{background:linear-gradient(135deg,#ecfdf5,#d1fae5); border:1px solid #a7f3d0; color:#065f46;}
+.cap-lesson .ce-rule{background:var(--accent-soft); border:1px solid var(--accent); color:var(--accent-dark);}
+.cap-lesson .ce-warn{background:#fef2f2; border:1px solid #fecaca; color:#991b1b;}
+.cap-lesson .ce-joke{background:#f1f5f9; border:1px dashed #94a3b8; color:#334155;}
+/* prompt builder */
+.cap-lesson .ce-pb-toggles{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;}
+.cap-lesson .ce-pt{border:2px solid var(--line); background:#fff; border-radius:13px; padding:12px 14px; cursor:pointer; font-family:inherit; text-align:left; transition:all .15s;}
+.cap-lesson .ce-pt:hover{border-color:var(--accent);}
+.cap-lesson .ce-pt.on{border-color:var(--accent); background:var(--accent-soft);}
+.cap-lesson .ce-pt .ce-pth{font-weight:800; font-size:14px; display:flex; align-items:center; gap:6px;}
+.cap-lesson .ce-pt .ce-pts{font-size:12px; color:var(--muted); margin-top:3px;}
+.cap-lesson .ce-pt.on .ce-pth::after{content:"✓"; color:var(--accent-dark); margin-left:auto;}
+.cap-lesson .ce-prompt-box{background:#0f172a; border-radius:14px; padding:18px 20px; color:#e2e8f0; font-family:'SF Mono',Consolas,monospace; font-size:13.5px; line-height:1.7; min-height:96px; white-space:pre-wrap;}
+.cap-lesson .ce-prompt-box .hl{color:#6ee7b7;}
+.cap-lesson .ce-meter{display:flex; align-items:center; gap:10px; margin-top:12px;}
+.cap-lesson .ce-meter-bar{flex:1; height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden;}
+.cap-lesson .ce-meter-fill{height:100%; width:20%; background:var(--accent); transition:width .3s, background .3s; border-radius:99px;}
+.cap-lesson .ce-meter-label{font-weight:700; font-size:14px; min-width:130px; text-align:right;}
+/* telegram chat demo */
+.cap-lesson .ce-tg{max-width:380px; margin:0 auto; border:1px solid var(--line); border-radius:20px; overflow:hidden; box-shadow:var(--shadow); background:#e7ebf0;}
+.cap-lesson .ce-tg-top{background:#527da3; color:#fff; padding:12px 16px; display:flex; align-items:center; gap:10px;}
+.cap-lesson .ce-tg-top .ce-tg-av{width:38px; height:38px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:20px;}
+.cap-lesson .ce-tg-top b{font-size:15px; display:block;} .cap-lesson .ce-tg-top small{font-size:12px; opacity:.85;}
+.cap-lesson .ce-tg-body{padding:14px; min-height:230px; max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; background:#cfd9e3;}
+.cap-lesson .ce-msg{max-width:80%; padding:9px 13px; border-radius:14px; font-size:14px; line-height:1.45; box-shadow:0 1px 2px rgba(0,0,0,.08);}
+.cap-lesson .ce-msg.me{align-self:flex-end; background:#cde7c4; border-bottom-right-radius:4px;}
+.cap-lesson .ce-msg.bot{align-self:flex-start; background:#fff; border-bottom-left-radius:4px;}
+.cap-lesson .ce-tg-ctl{display:flex; gap:8px; padding:12px; background:#fff; flex-wrap:wrap;}
+.cap-lesson .ce-tg-btn{border:1px solid var(--line); background:#f8fafc; border-radius:10px; padding:9px 14px; cursor:pointer; font-family:inherit; font-weight:700; font-size:13.5px; transition:all .15s;}
+.cap-lesson .ce-tg-btn:hover{border-color:var(--accent); background:var(--accent-soft);}
+/* find the bug */
+.cap-lesson .ce-code{background:#0f172a; border-radius:14px; padding:16px 18px; color:#e2e8f0; font-family:'SF Mono',Consolas,monospace; font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-x:auto;}
+.cap-lesson .ce-code .cm{color:#64748b;} .cap-lesson .ce-code .kw{color:#c4b5fd;} .cap-lesson .ce-code .st{color:#6ee7b7;} .cap-lesson .ce-code .fn{color:#fbbf24;}
+.cap-lesson .ce-missing{display:none; background:#7f1d1d; border-radius:8px; padding:4px 8px; margin-top:6px; color:#fecaca;}
+.cap-lesson .ce-missing.show{display:block; animation:bugflash .6s ease;}
+@keyframes bugflash{0%,100%{background:#7f1d1d}50%{background:#dc2626}}
+.cap-lesson .ce-bug-btn{margin-top:12px; border:2px dashed #dc2626; background:#fff; color:#b91c1c; font-weight:700; font-size:15px; padding:11px 18px; border-radius:12px; cursor:pointer; font-family:inherit; width:100%;}
+.cap-lesson .ce-bug-btn:hover{background:#fef2f2;}
+/* 3 lines */
+.cap-lesson .ce-line{display:flex; gap:12px; align-items:flex-start; background:#fff; border:1px solid var(--line); border-radius:14px; padding:0; margin-bottom:10px; box-shadow:0 4px 12px rgba(15,23,42,.04); overflow:hidden; cursor:pointer; transition:border-color .15s;}
+.cap-lesson .ce-line:hover{border-color:var(--accent);}
+.cap-lesson .ce-line .ce-ln{flex:0 0 auto; width:42px; align-self:stretch; background:var(--accent-soft); color:var(--accent-dark); font-weight:800; font-size:18px; display:flex; align-items:center; justify-content:center;}
+.cap-lesson .ce-line .ce-lbody{padding:13px 14px 13px 0; flex:1;}
+.cap-lesson .ce-line code{font-family:'SF Mono',Consolas,monospace; font-size:12.5px; color:var(--ink); display:block;}
+.cap-lesson .ce-line .ce-an{display:none; margin-top:8px; font-size:13.5px; color:#334155; font-style:italic;}
+.cap-lesson .ce-line.is-open{border-color:var(--accent);}
+.cap-lesson .ce-line.is-open .ce-an{display:block;}
+.cap-lesson .ce-line.is-open .ce-ln{background:var(--accent); color:#fff;}
+/* flashcards */
+.cap-lesson .ce-cards{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.cap-lesson .ce-flip{background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; cursor:pointer; transition:all .18s; min-height:84px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 4px 12px rgba(15,23,42,.04);}
+.cap-lesson .ce-flip:hover{border-color:var(--accent); box-shadow:0 8px 20px rgba(15,23,42,.08);}
+.cap-lesson .ce-flip .ce-q{font-weight:700; font-size:15px; display:flex; align-items:center; gap:8px;}
+.cap-lesson .ce-flip .ce-q::before{content:"❓"; font-size:15px;}
+.cap-lesson .ce-flip .ce-a{display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-size:14px; color:#334155;}
+.cap-lesson .ce-flip.is-open{background:var(--accent-soft); border-color:var(--accent);}
+.cap-lesson .ce-flip.is-open .ce-a{display:block;} .cap-lesson .ce-flip.is-open .ce-q::before{content:"✅";}
+/* quiz */
+.cap-lesson .ce-quiz{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px; box-shadow:var(--shadow);}
+.cap-lesson .ce-q-item{margin-bottom:18px;} .cap-lesson .ce-q-item .ce-q-text{font-weight:700; margin-bottom:10px; font-size:16px;}
+.cap-lesson .ce-opt{display:block; width:100%; text-align:left; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px 14px; margin-bottom:8px; cursor:pointer; font-family:inherit; font-size:15px; transition:all .12s;}
+.cap-lesson .ce-opt:hover{border-color:var(--accent);} .cap-lesson .ce-opt.sel{border-color:var(--accent); background:var(--accent-soft);}
+.cap-lesson .ce-opt.correct{border-color:#16a34a; background:#dcfce7; color:#166534; font-weight:600;}
+.cap-lesson .ce-opt.wrong{border-color:#dc2626; background:#fee2e2; color:#991b1b;}
+.cap-lesson .ce-quiz-btn{border:none; background:var(--accent); color:#fff; font-weight:700; font-size:16px; padding:13px 28px; border-radius:12px; cursor:pointer; font-family:inherit; box-shadow:0 8px 20px var(--accent-glow); transition:transform .15s;}
+.cap-lesson .ce-quiz-btn:hover{transform:translateY(-2px);}
+.cap-lesson .ce-quiz-res{margin-top:16px; font-size:18px; font-weight:800; text-align:center; display:none; padding:14px; border-radius:12px; background:var(--accent-soft); color:var(--accent-dark);}
+/* homework */
+.cap-lesson .ce-hw{border-radius:24px; padding:4px; margin-top:34px; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); box-shadow:0 16px 40px var(--accent-glow);}
+.cap-lesson .ce-hw-head{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:18px 24px; cursor:pointer; color:#fff;}
+.cap-lesson .ce-hw-head h2{font-size:22px; font-weight:800; display:flex; align-items:center; gap:12px;}
+.cap-lesson .ce-hw-toggle{background:rgba(255,255,255,.2); border:none; color:#fff; font-family:inherit; font-weight:700; font-size:14px; padding:9px 18px; border-radius:999px; cursor:pointer; display:flex; align-items:center; gap:7px; white-space:nowrap;}
+.cap-lesson .ce-hw-toggle .ce-arr{transition:transform .25s; display:inline-block;}
+.cap-lesson .ce-hw.is-open .ce-hw-toggle .ce-arr{transform:rotate(180deg);}
+.cap-lesson .ce-hw-body{display:none; background:#fff; border-radius:20px; margin:0 4px 4px; padding:22px 24px;}
+.cap-lesson .ce-hw.is-open .ce-hw-body{display:block;}
+.cap-lesson .ce-tabs{display:flex; gap:8px; margin-bottom:16px;}
+.cap-lesson .ce-tab{flex:1; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px; cursor:pointer; font-family:inherit; font-weight:700; font-size:14px; transition:all .15s; color:var(--muted);}
+.cap-lesson .ce-tab.is-active{background:var(--accent); border-color:var(--accent); color:#fff;}
+.cap-lesson .ce-tab small{display:block; font-weight:500; font-size:11px; opacity:.85;}
+.cap-lesson .ce-tab-pane{display:none;} .cap-lesson .ce-tab-pane.is-active{display:block;}
+.cap-lesson .ce-tab-pane ol{margin:0; padding-left:22px;} .cap-lesson .ce-tab-pane li{margin-bottom:10px;}
+.cap-lesson .ce-deliver{margin-top:14px; background:var(--accent-soft); border-radius:12px; padding:12px 14px; font-size:14px; color:var(--accent-dark);}
+.cap-lesson .ce-cheat-btn{margin-top:16px; border:2px dashed var(--accent); background:#fff; color:var(--accent-dark); font-weight:700; font-size:15px; padding:12px 20px; border-radius:12px; cursor:pointer; font-family:inherit; width:100%;}
+.cap-lesson .ce-cheat-btn:hover{background:var(--accent-soft);}
+.cap-lesson .ce-cheat-body{display:none; margin-top:12px;}
+.cap-lesson .ce-cheat-body.is-open{display:block;}
+.cap-lesson .ce-cheat-code{background:#0f172a; color:#e2e8f0; border-radius:12px; padding:14px 16px; font-family:'SF Mono',Consolas,monospace; font-size:12.5px; line-height:1.6; white-space:pre-wrap;}
+.cap-lesson .ce-teaser{margin-top:24px; border-radius:18px; padding:20px 24px; background:linear-gradient(135deg,#022c22,#047857); color:#fff; text-align:center;}
+.cap-lesson .ce-teaser b{font-size:18px;} .cap-lesson .ce-teaser p{margin:6px 0 0; color:#a7f3d0; font-size:15px;}
+.cap-lesson .ce-foot{text-align:center; margin-top:24px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:13px;}
+@media(max-width:680px){
+  .cap-lesson{font-size:16px;} .cap-lesson .ce-hero h1{font-size:24px;}
+  .cap-lesson .ce-goals,.cap-lesson .ce-cards,.cap-lesson .ce-pb-toggles{grid-template-columns:1fr;}
+  .cap-lesson .ce-tabs{flex-direction:column;}
+}
+</style>
+<!-- HERO -->
+<div class="ce-hero">
+  <span class="ce-badge">🟢 Этап 1 · AI-режим: ЗЕЛЁНЫЙ (генерирует)</span>
+  <h1>Урок 2. Vibe-coding: оживляем бота через ИИ</h1>
+  <p>Пока бот — как телефон без приложений. Через 15 минут он заговорит: напишем промт, сгенерируем код через AI и запустим. А ещё поймаем баг, который подкинет AI.</p>
+  <div class="ce-meta">
+    <span>⏱️ 20 минут</span>
+    <span>📹 Видеоурок</span>
+    <span>🤖 ChatGPT / Claude</span>
+    <span>🐍 python-telegram-bot</span>
+  </div>
+</div>
+<!-- ЦЕЛИ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">🎯</span> Результат урока</div>
+  <div class="ce-goals">
+    <div class="ce-goal">Понимаешь, что такое <b>промт</b> и почему детальный лучше короткого</div>
+    <div class="ce-goal">Сгенерировал код бота через AI и <b>запустил</b> его</div>
+    <div class="ce-goal">Бот отвечает на <b>/start</b> и <b>/help</b> в Telegram</div>
+    <div class="ce-goal">Увидел, что <b>AI ошибается</b>, и нашёл баг</div>
+  </div>
+</div>
+<!-- ВИДЕО -->
+<!-- 👇 ВСТАВЬ ССЫЛКУ НА ВИДЕО в data-video="" -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">▶</span> Смотри видеоурок</div>
+  <div class="ce-video" id="ceb2-video" data-video="https://youtu.be/S-l3MQHcL8I"></div>
+  <div class="ce-vcap">Видео · 20 мин · ставь на паузу на заданиях и повторяй за спикером</div>
+</div>
+<!-- ХУК -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">1</span> Бот пустой — оживим его</div>
+  <div class="ce-callout ce-hook"><span class="ce-ico">🤖</span>
+    Помнишь нашего бота с прошлого урока? Сейчас он как <b>телефон без приложений</b> — красивый, но бесполезный. Через 15 минут он заговорит. Но есть подвох: <b>AI иногда ошибается</b> — и сегодня мы это докажем.
+  </div>
+</div>
+<!-- ТЕОРИЯ ПРОМТА + КОНСТРУКТОР -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">2</span> Что такое промт</div>
+  <div class="ce-card">
+    <p><b>Промт</b> (prompt — «подсказка») — это задание для AI. ИИ — как <b>умный стажёр</b>: очень способный, но буквальный. Скажешь «принеси еду» — принесёт что попало. Скажешь «пиццу маргариту, тонкое тесто, без оливок, за 20 минут» — получишь именно то, что нужно.</p>
+  </div>
+  <div class="ce-card">
+    <p style="margin-bottom:14px;color:var(--muted);font-size:15px;">👇 Собери промт сам: включай детали и смотри, как «каша» превращается в чёткое задание.</p>
+    <div class="ce-pb-toggles" id="ceb2-pb">
+      <button class="ce-pt" data-k="lang"><span class="ce-pth">🗣 Язык</span><span class="ce-pts">Python</span></button>
+      <button class="ce-pt" data-k="lib"><span class="ce-pth">📚 Библиотека</span><span class="ce-pts">python-telegram-bot v20+</span></button>
+      <button class="ce-pt" data-k="what"><span class="ce-pth">✅ Что делает</span><span class="ce-pts">/start, /help, факты про котов</span></button>
+      <button class="ce-pt" data-k="async"><span class="ce-pth">⚡ Технология</span><span class="ce-pts">async/await, комменты на русском</span></button>
+    </div>
+    <div class="ce-prompt-box" id="ceb2-prompt">Напиши бота для Telegram</div>
+    <div class="ce-meter">
+      <div class="ce-meter-bar"><div class="ce-meter-fill" id="ceb2-fill"></div></div>
+      <div class="ce-meter-label" id="ceb2-mlabel">🔴 Каша</div>
+    </div>
+  </div>
+  <div class="ce-callout ce-rule"><span class="ce-ico">💡</span>
+    Правило: <b>чем подробнее промт — тем лучше результат.</b> Указывай язык, библиотеку и что именно бот должен делать.
+  </div>
+</div>
+<!-- ЖИВОЙ КОДИНГ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">3</span> Живой кодинг: от промта до запуска</div>
+  <div class="ce-card">
+    <p>Отправляешь отличный промт в ChatGPT → копируешь код в VS Code → вставляешь токен → запускаешь:</p>
+    <div class="ce-code"><span class="cm"># 1) ставим библиотеку (один раз)</span>
+pip install python-telegram-bot
+<span class="cm"># 2) запускаем бота</span>
+python bot.py
+<span class="st">→ Бот запущен ✅</span></div>
+  </div>
+  <div class="ce-callout ce-warn"><span class="ce-ico">🔒</span>
+    <b>Токен — это пароль бота.</b> Без него код не знает, каким ботом управлять. Никому не показывай! Мы пока не разбираем каждую строку — главное, что он работает.
+  </div>
+</div>
+<!-- WOW: TELEGRAM ЧАТ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">⚡</span> Wow: бот отвечает! Попробуй сам</div>
+  <div class="ce-card">
+    <p style="margin-bottom:16px;color:var(--muted);font-size:15px;">Нажми команды внизу — и бот ответит, как настоящий. Именно так заработает твой бот после запуска.</p>
+    <div class="ce-tg">
+      <div class="ce-tg-top"><span class="ce-tg-av">🤖</span><span><b>MyFirstBot</b><small>бот · онлайн</small></span></div>
+      <div class="ce-tg-body" id="ceb2-tg-body">
+        <div class="ce-msg bot">Привет! Я твой первый бот 🤖 Жми команды снизу 👇</div>
+      </div>
+      <div class="ce-tg-ctl">
+        <button class="ce-tg-btn" data-cmd="start">/start</button>
+        <button class="ce-tg-btn" data-cmd="help">/help</button>
+        <button class="ce-tg-btn" data-cmd="msg">💬 сообщение</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ПРОВОКАЦИЯ: AI ОШИБСЯ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">4</span> Провокация: AI ошибся — найди баг</div>
+  <div class="ce-card">
+    <p>Мы попросили AI добавить команду <b>/joke</b>. Он написал функцию — но кое-что забыл. Бот команду <b>не видит</b>. Посмотри код и нажми кнопку, чтобы узнать, чего не хватает:</p>
+    <div class="ce-code"><span class="kw">async def</span> <span class="fn">joke</span>(update, context):
+    jokes = [<span class="st">'Почему программист носит очки?'</span>,
+             <span class="st">'Потому что не может C#'</span>]
+    <span class="kw">await</span> update.message.reply_text(random.choice(jokes))
+<span class="cm"># функция есть... но бот про неё не знает 🤔</span>
+<div class="ce-missing" id="ceb2-missing"># ⚠️ AI ЗАБЫЛ ЭТУ СТРОКУ:
+app.add_handler(CommandHandler('joke', joke))</div></div>
+    <button class="ce-bug-btn" id="ceb2-bug-btn">🐞 Показать, что забыл AI</button>
+  </div>
+  <div class="ce-callout ce-joke"><span class="ce-ico">🧑‍💼</span>
+    Это как нанять сотрудника, но <b>забыть представить его команде</b> — он есть, но никто не знает, что к нему обращаться. Вот почему мы не просто копируем код, а <b>проверяем его</b>.
+  </div>
+</div>
+<!-- РАЗБОР 3 СТРОК -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">5</span> 3 ключевые строки — нажми и пойми</div>
+  <div id="ceb2-lines">
+    <div class="ce-line"><div class="ce-ln">①</div><div class="ce-lbody"><code>from telegram.ext import Application, CommandHandler</code><div class="ce-an">🧰 Открываем ящик с инструментами и достаём нужную отвёртку — подключаем готовые детали для бота.</div></div></div>
+    <div class="ce-line"><div class="ce-ln">②</div><div class="ce-lbody"><code>app.add_handler(CommandHandler('start', start))</code><div class="ce-an">🔘 Подключаем кнопку: нажал /start — сработала функция. Именно ЭТУ строку AI забыл для /joke!</div></div></div>
+    <div class="ce-line"><div class="ce-ln">③</div><div class="ce-lbody"><code>app.run_polling()</code><div class="ce-an">📻 Включили рацию: бот слушает и ждёт сообщения — как охранник на посту.</div></div></div>
+  </div>
+  <div class="ce-callout ce-rule"><span class="ce-ico">✅</span>
+    Три строки — и бот работает. Остальное разберём на следующих уроках, когда начнём писать код сами.
+  </div>
+</div>
+<!-- ======================= ПРЕЗЕНТАЦИЯ ======================= -->
+<!-- 👇 ВСТАВЬ ССЫЛКУ НА ПРЕЗЕНТАЦИЮ в data-slides="" -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">🖥️</span> Презентация урока</div>
+  <div class="ce-video" id="ceb2-slides" data-slides="https://capeducation.getcourse.ru/pl/fileservice/user/file/download/h/88e0639e260ddcdd8310b40469929843.pdf"></div>
+  <div class="ce-slidebtns" id="ceb2-slidebtns"></div>
+</div>
+<!-- КАРТОЧКИ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">🃏</span> Запомни термины — нажми на карточку</div>
+  <div class="ce-cards" id="ceb2-cards">
+    <div class="ce-flip"><div class="ce-q">Что такое промт?</div><div class="ce-a">Задание-подсказка для AI. Чем подробнее (язык, библиотека, что делать) — тем лучше результат.</div></div>
+    <div class="ce-flip"><div class="ce-q">Почему «детальный» лучше?</div><div class="ce-a">AI буквален, как стажёр. «Сделай бота» → каша. Конкретика → нужный результат.</div></div>
+    <div class="ce-flip"><div class="ce-q">Что такое токен?</div><div class="ce-a">Секретный пароль бота. Код через него управляет ботом. Никому не показывай.</div></div>
+    <div class="ce-flip"><div class="ce-q">Что делает add_handler?</div><div class="ce-a">Подключает команду к функции. Без неё бот не знает про команду (как /joke у AI).</div></div>
+    <div class="ce-flip"><div class="ce-q">Что делает run_polling()?</div><div class="ce-a">Запускает «прослушку»: бот ждёт и принимает сообщения от пользователей.</div></div>
+    <div class="ce-flip"><div class="ce-q">Зачем pip install?</div><div class="ce-a">Ставит библиотеку python-telegram-bot — готовые инструменты для работы с Telegram.</div></div>
+  </div>
+</div>
+<!-- ТЕСТ -->
+<div class="ce-sec">
+  <div class="ce-sec-title"><span class="ce-num">✅</span> Проверь себя (5 вопросов)</div>
+  <div class="ce-quiz" id="ceb2-quiz">
+    <div class="ce-q-item" data-correct="1">
+      <div class="ce-q-text">1. Что такое промт?</div>
+      <button class="ce-opt">Название бота</button>
+      <button class="ce-opt">Задание-подсказка для AI</button>
+      <button class="ce-opt">Ошибка в коде</button>
+    </div>
+    <div class="ce-q-item" data-correct="2">
+      <div class="ce-q-text">2. Какой промт даст лучший результат?</div>
+      <button class="ce-opt">«Сделай бота»</button>
+      <button class="ce-opt">«Бот»</button>
+      <button class="ce-opt">«Бот на Python, python-telegram-bot, команды /start и /help, async»</button>
+    </div>
+    <div class="ce-q-item" data-correct="0">
+      <div class="ce-q-text">3. Почему бот не видел команду /joke?</div>
+      <button class="ce-opt">AI забыл строку app.add_handler(...)</button>
+      <button class="ce-opt">Telegram сломался</button>
+      <button class="ce-opt">Не хватило интернета</button>
+    </div>
+    <div class="ce-q-item" data-correct="1">
+      <div class="ce-q-text">4. Что такое токен бота?</div>
+      <button class="ce-opt">Название команды</button>
+      <button class="ce-opt">Секретный пароль бота — никому не показывать</button>
+      <button class="ce-opt">Имя пользователя</button>
+    </div>
+    <div class="ce-q-item" data-correct="2">
+      <div class="ce-q-text">5. Главный вывод про AI-код?</div>
+      <button class="ce-opt">AI никогда не ошибается</button>
+      <button class="ce-opt">Код можно не читать</button>
+      <button class="ce-opt">AI-код всегда нужно проверять</button>
+    </div>
+    <button class="ce-quiz-btn" id="ceb2-quiz-check">Проверить ответы</button>
+    <div class="ce-quiz-res" id="ceb2-quiz-res"></div>
+  </div>
+</div>
+<!-- ДОМАШНЕЕ ЗАДАНИЕ -->
+<div class="ce-hw" id="ceb2-hw">
+  <div class="ce-hw-head" id="ceb2-hw-head">
+    <h2>📝 Домашнее задание</h2>
+    <button class="ce-hw-toggle" type="button">Открыть <span class="ce-arr">▾</span></button>
+  </div>
+  <div class="ce-hw-body">
+    <div class="ce-tabs" id="ceb2-hw-tabs">
+      <button class="ce-tab is-active" data-pane="lvl1">Уровень 1 <small>основное</small></button>
+      <button class="ce-tab" data-pane="lvl2">Уровень 2 <small>если застрял</small></button>
+    </div>
+    <div class="ce-tab-pane is-active" data-pane="lvl1">
+      <ol>
+        <li>Придумай свою <b>тему бота</b>: помощник / игра / квиз / мемы.</li>
+        <li>Напиши <b>детальный промт</b> → сгенерируй код через AI → запусти.</li>
+        <li><b>Проверь AI:</b> найди отличие от ожидаемого ИЛИ специально убери 1 строку и посмотри, что сломается.</li>
+      </ol>
+      <div class="ce-deliver">💬 Если AI у тебя «не ошибся» — это нормально! Поэтому задание: найти отличие ИЛИ сломать специально. Оба варианта = успех. Пришли скрин бота в Telegram.</div>
+    </div>
+    <div class="ce-tab-pane" data-pane="lvl2">
+      <ol>
+        <li>Возьми <b>готовый отличный промт</b> из шпаргалки ниже.</li>
+        <li>Замени тему на свою (вместо фактов про котов — факты про что угодно).</li>
+        <li>Запусти и пришли <b>скрин бота</b> в Telegram.</li>
+      </ol>
+      <div class="ce-deliver">💡 Уровень 2 — не стыдно. Главное — получить работающего бота и двигаться дальше.</div>
+    </div>
+    <button class="ce-cheat-btn" id="ceb2-cheat-btn" type="button">💡 Открыть шпаргалку (готовый промт)</button>
+    <div class="ce-cheat-body" id="ceb2-cheat-body">
+      <div class="ce-cheat-code">Напиши Telegram-бота на Python с библиотекой
+python-telegram-bot (v20+). Бот должен:
+1. Отвечать на /start приветствием и описанием
+2. Отвечать на /help списком команд
+3. На любое сообщение — случайным фактом
+   про [ТВОЯ ТЕМА] (5 фактов)
+4. Использовать async/await
+Токен вставлю сам. Комментарии на русском.</div>
+    </div>
+  </div>
+</div>
+<div class="ce-teaser">
+  <b>🔮 На следующем уроке</b>
+  <p>Твой бот научится отправлять мемы и картинки. Да — ты будешь получать мемы в Telegram от собственного бота!</p>
+</div>
+<div class="ce-foot">CAP Education · Бэкенд-разработка 2026 · Урок 2 из 52</div>
+<script>
+(function(){
+  var root = document.querySelector('.cap-lesson--b2'); if(!root) return;
+  /* видео и презентация */
+  function ytId(u){ var m=u.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/); return m?m[1]:""; }
+  function ytList(u){ var m=u.match(/[?&]list=([A-Za-z0-9_-]+)/); return m?m[1]:""; }
+  function slidesEmbed(u){ var g=u.match(/docs\.google\.com\/presentation\/d\/([A-Za-z0-9_-]+)/); if(g) return 'https://docs.google.com/presentation/d/'+g[1]+'/embed'; if(/\.pdf(\?|$)/i.test(u)) return u+'#toolbar=0&navpanes=0&scrollbar=0&view=FitH'; if(/\.pptx?(\?|$)/i.test(u)) return 'https://view.officeapps.live.com/op/embed.aspx?src='+encodeURIComponent(u); if(/canva\.com/.test(u)&&!/embed/.test(u)) return u+(u.indexOf('?')>-1?'&':'?')+'embed'; return u; }
+  (function(){ var box=root.querySelector('#ceb2-video'); var raw=(box.getAttribute('data-video')||'').trim();
+    if(raw){ var id=ytId(raw); var src='https://www.youtube.com/embed/'+id; var l=ytList(raw); if(l) src+='?list='+l;
+      box.innerHTML = id ? '<iframe src="'+src+'" allow="accelerated-encoding;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>' : '<div class="ce-empty">🎬<br>Проверь ссылку на видео</div>';
+    } else { box.innerHTML='<div class="ce-empty">🎬<br>Вставь ссылку на видео в data-video=""</div>'; } })();
+  function loadPdfJs(cb){ if(window.pdfjsLib){ cb(true); return; }
+    var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload=function(){ try{ window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }catch(e){} cb(true); };
+    s.onerror=function(){ cb(false); }; document.head.appendChild(s); }
+  function renderPdf(url, wrap){
+    var pdfDoc=null, pageNum=1, rendering=false, pending=null;
+    var canvas=document.createElement('canvas');
+    var prev=document.createElement('button'); prev.className='ce-pdf-nav prev'; prev.setAttribute('type','button'); prev.innerHTML='‹';
+    var next=document.createElement('button'); next.className='ce-pdf-nav next'; next.setAttribute('type','button'); next.innerHTML='›';
+    var count=document.createElement('div'); count.className='ce-pdf-count';
+    pdfjsLib.getDocument(url).promise.then(function(doc){ pdfDoc=doc; wrap.innerHTML=''; wrap.appendChild(canvas); wrap.appendChild(prev); wrap.appendChild(next); wrap.appendChild(count); renderPage(1); })
+      .catch(function(){ wrap.innerHTML='<div class="ce-pdf-loading">Не удалось загрузить презентацию</div>'; });
+    function renderPage(n){ rendering=true; pdfDoc.getPage(n).then(function(page){
+        var dpr=window.devicePixelRatio||1; var rect=wrap.getBoundingClientRect(); var vp1=page.getViewport({scale:1});
+        var scale=Math.min(rect.width/vp1.width, rect.height/vp1.height); var vp=page.getViewport({scale:scale*dpr});
+        canvas.width=vp.width; canvas.height=vp.height; canvas.style.width=(vp.width/dpr)+'px'; canvas.style.height=(vp.height/dpr)+'px';
+        page.render({canvasContext:canvas.getContext('2d'), viewport:vp}).promise.then(function(){ rendering=false; if(pending!==null){ var p=pending; pending=null; renderPage(p); } });
+        count.textContent=n+' / '+pdfDoc.numPages; prev.disabled=(n<=1); next.disabled=(n>=pdfDoc.numPages);
+      }); }
+    function go(n){ if(!pdfDoc||n<1||n>pdfDoc.numPages) return; pageNum=n; if(rendering){ pending=n; } else { renderPage(n); } }
+    prev.addEventListener('click', function(){ go(pageNum-1); });
+    next.addEventListener('click', function(){ go(pageNum+1); });
+    var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(function(){ if(pdfDoc) renderPage(pageNum); }, 150); });
+  }
+  (function(){ var box=root.querySelector('#ceb2-slides'); var raw=(box.getAttribute('data-slides')||'').trim(); var btns=root.querySelector('#ceb2-slidebtns');
+    if(!(raw && raw.indexOf('http')===0)){ box.innerHTML='<div class="ce-empty">🖥️<br>Вставь ссылку на презентацию в data-slides=""</div>'; return; }
+    btns.innerHTML='<a href="'+raw+'" target="_blank" rel="noopener">⬇ Скачать / открыть на весь экран</a>';
+    if(/\.pdf(\?|$)/i.test(raw)){ box.innerHTML='<div class="ce-pdf"><div class="ce-pdf-loading">Загрузка презентации…</div></div>'; var wrap=box.querySelector('.ce-pdf');
+      loadPdfJs(function(ok){ if(!ok){ box.innerHTML='<iframe src="'+slidesEmbed(raw)+'" allowfullscreen></iframe>'; return; } renderPdf(raw, wrap); }); }
+    else { box.innerHTML='<iframe src="'+slidesEmbed(raw)+'" allowfullscreen></iframe>'; } })();
+  /* конструктор промта */
+  var st={lang:false,lib:false,what:false,async:false};
+  var pts=root.querySelectorAll('#ceb2-pb .ce-pt');
+  var box=root.querySelector('#ceb2-prompt'); var fill=root.querySelector('#ceb2-fill'); var mlabel=root.querySelector('#ceb2-mlabel');
+  function render(){
+    var on=(st.lang?1:0)+(st.lib?1:0)+(st.what?1:0)+(st.async?1:0);
+    var h='Напиши Telegram-бота';
+    if(st.lang) h+=' на <span class="hl">Python</span>';
+    if(st.lib) h+=' с библиотекой <span class="hl">python-telegram-bot (v20+)</span>';
+    h+='.';
+    if(st.what) h+='\nКоманды: <span class="hl">/start (привет), /help (список), на сообщение — факт про котов</span>.';
+    if(st.async) h+='\n<span class="hl">async/await, комментарии на русском.</span>';
+    box.innerHTML=h;
+    var pct=[20,40,60,80,100][on]; fill.style.width=pct+'%';
+    var labels=['🔴 Каша','🟠 Уже лучше','🟡 Неплохо','🟢 Хорошо','🟢 Отличный промт!'];
+    var colors=['#ef4444','#f97316','#f59e0b','#16a34a','#059669'];
+    fill.style.background=colors[on]; mlabel.textContent=labels[on]; mlabel.style.color=colors[on];
+  }
+  pts.forEach(function(p){ p.addEventListener('click', function(){ var k=p.getAttribute('data-k'); st[k]=!st[k]; p.classList.toggle('on',st[k]); render(); }); });
+  render();
+  /* telegram демо */
+  var facts=['Коты спят до 16 часов в день — почти как сервер на проде 😴','Первый «баг» в истории — реальный мотылёк в компьютере, 1947 год 🦋','Python назван не в честь змеи, а в честь Monty Python 🐍','У котов 230 костей, у программиста после дедлайна — 0 💀','«It works on my machine» — главное заклинание разработчика ✨'];
+  var fi=0; var tgBody=root.querySelector('#ceb2-tg-body');
+  function addMsg(text, who){ var d=document.createElement('div'); d.className='ce-msg '+who; d.innerHTML=text; tgBody.appendChild(d); tgBody.scrollTop=tgBody.scrollHeight; }
+  root.querySelectorAll('.ce-tg-btn').forEach(function(b){ b.addEventListener('click', function(){
+    var c=b.getAttribute('data-cmd');
+    if(c==='start'){ addMsg('/start','me'); setTimeout(function(){ addMsg('👋 Привет! Я бот, которого ты создал. Напиши /help, чтобы увидеть команды.','bot'); },350); }
+    else if(c==='help'){ addMsg('/help','me'); setTimeout(function(){ addMsg('📋 Команды:\n/start — приветствие\n/help — это меню\nЛюбое сообщение — факт 🐱'.replace(/\n/g,'<br>'),'bot'); },350); }
+    else { addMsg('расскажи факт','me'); setTimeout(function(){ addMsg(facts[fi%facts.length],'bot'); fi++; },350); }
+  }); });
+  /* найди баг */
+  root.querySelector('#ceb2-bug-btn').addEventListener('click', function(){
+    root.querySelector('#ceb2-missing').classList.add('show');
+    this.textContent='✅ Вот её AI и забыл — без неё бот не видит /joke';
+  });
+  /* 3 строки */
+  root.querySelectorAll('#ceb2-lines .ce-line').forEach(function(l){ l.addEventListener('click', function(){ l.classList.toggle('is-open'); }); });
+  /* карточки */
+  root.querySelectorAll('#ceb2-cards .ce-flip').forEach(function(c){ c.addEventListener('click', function(){ c.classList.toggle('is-open'); }); });
+  /* тест */
+  root.querySelectorAll('#ceb2-quiz .ce-q-item').forEach(function(item){
+    var opts=item.querySelectorAll('.ce-opt');
+    opts.forEach(function(o,i){ o.addEventListener('click', function(){ opts.forEach(function(x){x.classList.remove('sel');}); o.classList.add('sel'); item.setAttribute('data-chosen', i); }); });
+  });
+  root.querySelector('#ceb2-quiz-check').addEventListener('click', function(){
+    var items=root.querySelectorAll('#ceb2-quiz .ce-q-item'); var score=0, total=items.length;
+    items.forEach(function(item){ var correct=parseInt(item.getAttribute('data-correct'),10); var chosen=item.getAttribute('data-chosen'); var opts=item.querySelectorAll('.ce-opt');
+      opts.forEach(function(o,i){ o.classList.remove('correct','wrong'); if(i===correct) o.classList.add('correct'); if(chosen!==null && parseInt(chosen,10)===i && i!==correct) o.classList.add('wrong'); });
+      if(chosen!==null && parseInt(chosen,10)===correct) score++; });
+    var res=root.querySelector('#ceb2-quiz-res'); res.style.display='block';
+    var msg = score===total ? '🏆 Идеально!' : (score>=total*0.6 ? '👍 Хорошо!' : '💪 Пересмотри видео и попробуй снова');
+    res.textContent = msg+' Результат: '+score+' из '+total;
+  });
+  /* ДЗ */
+  var hw=root.querySelector('#ceb2-hw');
+  root.querySelector('#ceb2-hw-head').addEventListener('click', function(){ hw.classList.toggle('is-open'); var t=root.querySelector('.ce-hw-toggle'); t.firstChild.textContent = hw.classList.contains('is-open')?'Свернуть ':'Открыть '; });
+  var tabs=root.querySelectorAll('#ceb2-hw-tabs .ce-tab');
+  tabs.forEach(function(tab){ tab.addEventListener('click', function(e){ e.stopPropagation(); var pane=tab.getAttribute('data-pane'); tabs.forEach(function(x){x.classList.remove('is-active');}); tab.classList.add('is-active'); root.querySelectorAll('.ce-tab-pane').forEach(function(p){ p.classList.toggle('is-active', p.getAttribute('data-pane')===pane); }); }); });
+  root.querySelector('#ceb2-cheat-btn').addEventListener('click', function(){ var b=root.querySelector('#ceb2-cheat-body'); b.classList.toggle('is-open'); this.textContent = b.classList.contains('is-open')?'🙈 Свернуть шпаргалку':'💡 Открыть шпаргалку (готовый промт)'; });
+})();
+</script>
+</div>
+
+</body>
+</html>
