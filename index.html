@@ -148,6 +148,8 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 
 /* ---------- hero ---------- */
 #hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;}
+.hero-inner{display:flex;align-items:center;justify-content:space-between;gap:48px;}
+.hero-text{flex:1;min-width:0;}
 .hero-eyebrow{font-size:.95rem;font-weight:600;color:var(--ink-soft);margin-bottom:18px;}
 .hero-name{font-size:clamp(2.6rem,8vw,6rem);font-weight:800;letter-spacing:-2px;line-height:1.02;}
 .hero-name .accent{color:var(--rose);position:relative;}
@@ -155,6 +157,23 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .hero-tagline .cursor-blink{display:inline-block;width:2px;background:var(--terracotta);margin-left:2px;animation:blink 1s step-end infinite;}
 @keyframes blink{50%{opacity:0;}}
 .hero-cta{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+/* ---------- hero photo ---------- */
+.hero-photo-wrap{position:relative;flex:0 0 auto;width:clamp(190px,24vw,300px);aspect-ratio:720/822;transform:rotate(-4deg);animation:heroPhotoFloat 6s ease-in-out infinite;}
+@keyframes heroPhotoFloat{0%,100%{transform:rotate(-4deg) translateY(0);}50%{transform:rotate(-2deg) translateY(-14px);}}
+.hero-photo-glow{position:absolute;inset:-26px;border-radius:44% 56% 60% 40% / 48% 42% 58% 52%;background:linear-gradient(135deg,var(--blush),var(--terracotta));filter:blur(40px);opacity:.6;z-index:0;animation:floatSoft 12s ease-in-out infinite;}
+.hero-photo-ring{position:absolute;inset:-10px;border-radius:40% 60% 55% 45% / 50% 45% 55% 50%;border:2px dashed var(--rose);opacity:.4;z-index:0;animation:heroRingSpin 30s linear infinite;}
+@keyframes heroRingSpin{to{transform:rotate(360deg);}}
+.hero-photo{position:relative;z-index:1;width:100%;height:100%;border-radius:40% 60% 55% 45% / 48% 44% 56% 52%;object-fit:cover;object-position:center 22%;border:7px solid var(--card);box-shadow:var(--shadow);display:block;
+  -webkit-mask-image:linear-gradient(to bottom, #000 76%, transparent 96%);mask-image:linear-gradient(to bottom, #000 76%, transparent 96%);}
+.hero-photo-tint{position:absolute;inset:7px;border-radius:40% 60% 55% 45% / 48% 44% 56% 52%;z-index:1;pointer-events:none;background:linear-gradient(155deg,rgba(204,122,140,.16),rgba(224,161,130,.1) 55%,transparent 80%);mix-blend-mode:multiply;
+  -webkit-mask-image:linear-gradient(to bottom, #000 76%, transparent 96%);mask-image:linear-gradient(to bottom, #000 76%, transparent 96%);}
+.hero-photo-heart{position:absolute;z-index:2;bottom:2%;right:-6%;width:46px;height:46px;background:var(--card);border-radius:50%;box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;transform:rotate(4deg);}
+@media (max-width:920px){
+  .hero-inner{flex-direction:column-reverse;text-align:center;gap:32px;}
+  .hero-cta{justify-content:center;}
+  .hero-tagline{margin-left:auto;margin-right:auto;}
+  .hero-photo-wrap{width:200px;}
+}
 .btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:100px;font-weight:700;font-size:.95rem;transition:transform .35s cubic-bezier(.2,.8,.2,1);}
 .btn-primary{background:var(--ink);color:var(--cream);}
 .btn-primary:hover{transform:translateY(-3px);}
@@ -174,20 +193,6 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .stat-label{font-size:.85rem;color:var(--ink-soft);margin-top:6px;}
 .skill-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .chip{padding:9px 18px;border-radius:100px;background:var(--card);font-size:.85rem;font-weight:600;box-shadow:var(--shadow-sm);}
-
-/* ---------- accounts ---------- */
-.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
-.acc-card{position:relative;background:var(--card);border-radius:var(--radius);padding:38px;box-shadow:var(--shadow);overflow:hidden;transition:transform .4s cubic-bezier(.2,.8,.2,1);}
-.acc-card:hover{transform:translateY(-6px);}
-.acc-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:22px;}
-.acc-icon.gh{background:var(--ink);color:var(--cream);}
-.acc-icon.tg{background:var(--rose);color:#fff;}
-.acc-card h3{font-size:1.4rem;font-weight:700;margin-bottom:10px;}
-.acc-card p{color:var(--ink-soft);font-size:.95rem;line-height:1.6;margin-bottom:22px;}
-.acc-link{font-weight:700;font-size:.9rem;display:inline-flex;align-items:center;gap:8px;}
-.acc-link .arrow{transition:transform .3s;}
-.acc-card:hover .arrow{transform:translate(4px,-4px);}
-.acc-deco{position:absolute;right:-30px;bottom:-30px;font-size:6rem;opacity:.06;font-weight:800;font-family:'Bricolage Grotesque',sans-serif;}
 
 /* ---------- works gallery ---------- */
 .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;}
@@ -209,6 +214,38 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
 .tag-row span{font-size:.72rem;font-weight:700;padding:5px 11px;border-radius:100px;background:var(--sand);color:var(--ink-soft);}
 .work-link{font-weight:700;font-size:.88rem;display:inline-flex;align-items:center;gap:6px;color:var(--rose);}
+.work-links{display:flex;flex-wrap:wrap;gap:20px;}
+.work-link--case{color:var(--ink-softer);}
+.work-link--case:hover{color:var(--ink);}
+
+/* ---------- case studies ---------- */
+.case-list{display:flex;flex-direction:column;gap:26px;}
+.case-card{background:var(--card);border-radius:var(--radius);padding:36px 40px;box-shadow:var(--shadow);scroll-margin-top:110px;}
+.case-head{display:flex;align-items:center;gap:18px;margin-bottom:22px;}
+.case-num{flex:0 0 auto;width:48px;height:48px;border-radius:14px;background:var(--sand);color:var(--rose-deep);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+.case-head h3{font-size:1.3rem;font-weight:700;line-height:1.3;}
+.case-block{margin-bottom:18px;}
+.case-block:last-of-type{margin-bottom:20px;}
+.case-block p{color:var(--ink-soft);font-size:.98rem;line-height:1.7;}
+.case-label{display:inline-flex;align-items:center;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;padding:5px 13px;border-radius:100px;margin-bottom:10px;}
+.case-label.problem{background:var(--sand);color:var(--ink-soft);}
+.case-label.solution{background:var(--blush);color:var(--rose-deep);}
+.case-label.result{background:var(--ink);color:var(--cream);}
+.testimonial{position:relative;margin-top:26px;background:var(--card);border:2px dashed var(--rose);border-radius:var(--radius);padding:36px 40px;}
+.testimonial-badge{position:absolute;top:-14px;left:32px;background:var(--rose-deep);color:var(--cream);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:6px 14px;border-radius:100px;}
+.testimonial-mark{font-family:'Bricolage Grotesque',sans-serif;font-size:3.2rem;color:var(--rose);line-height:1;margin-bottom:4px;}
+.testimonial-quote{font-size:1.05rem;font-style:italic;color:var(--ink-soft);line-height:1.7;max-width:640px;margin-bottom:14px;}
+.testimonial-author{font-weight:700;font-size:.88rem;color:var(--ink-softer);}
+.case-conclusion{margin-top:30px;background:linear-gradient(135deg,var(--blush),var(--sand));border-radius:var(--radius);padding:32px 38px;text-align:center;}
+.case-conclusion p{font-size:1.05rem;line-height:1.7;color:var(--ink);max-width:720px;margin:0 auto;}
+.case-conclusion b{color:var(--rose-deep);}
+@media (max-width:600px){
+  .case-card{padding:26px 22px;}
+  .case-head{gap:12px;}
+  .case-num{width:38px;height:38px;font-size:.95rem;border-radius:11px;}
+  .case-conclusion{padding:24px 22px;}
+  .testimonial{padding:26px 22px;}
+}
 
 /* ---------- services / selling posts ---------- */
 .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
@@ -260,7 +297,6 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   .stat-grid{gap:12px;}
   .stat-card{padding:20px 16px;}
   .stat-num{font-size:1.9rem;}
-  .acc-card{padding:28px 24px;}
   .service-card{padding:26px 22px;}
   .work-body{padding:22px 20px 24px;}
   .contact-links{flex-direction:column;align-items:stretch;}
@@ -290,7 +326,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   <nav class="desktop-nav">
     <a href="#about">Обо мне</a>
     <a href="#works">Работы</a>
-    <a href="#accounts">Аккаунты</a>
+    <a href="#cases">Кейсы</a>
     <a href="#services">Услуги</a>
     <a href="#contact">Контакты</a>
   </nav>
@@ -304,19 +340,30 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
 <div id="mobileMenu">
   <a href="#about"><span class="heart-css" style="--hs:8px"></span>Обо мне</a>
   <a href="#works"><span class="heart-css" style="--hs:8px"></span>Работы</a>
-  <a href="#accounts"><span class="heart-css" style="--hs:8px"></span>Аккаунты</a>
+  <a href="#cases"><span class="heart-css" style="--hs:8px"></span>Кейсы</a>
   <a href="#services"><span class="heart-css" style="--hs:8px"></span>Услуги</a>
   <a href="#contact"><span class="heart-css" style="--hs:8px"></span>Контакты</a>
 </div>
 
 <!-- ================= HERO ================= -->
 <section id="hero">
-  <div class="hero-eyebrow reveal">Привет, на связи</div>
-  <h1 class="hero-name reveal">Эльнара<br><span class="accent">Рустамкызы</span></h1>
-  <p class="hero-tagline reveal" id="typewriter">&nbsp;</p>
-  <div class="hero-cta reveal">
-    <a href="#works" class="btn btn-primary">Смотреть работы</a>
-    <a href="#contact" class="btn btn-ghost">Связаться</a>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow reveal">Привет, на связи</div>
+      <h1 class="hero-name reveal">Эльнара<br><span class="accent">Рустамкызы</span></h1>
+      <p class="hero-tagline reveal" id="typewriter">&nbsp;</p>
+      <div class="hero-cta reveal">
+        <a href="#works" class="btn btn-primary">Смотреть работы</a>
+        <a href="#contact" class="btn btn-ghost">Связаться</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap reveal">
+      <div class="hero-photo-glow"></div>
+      <div class="hero-photo-ring"></div>
+      <img class="hero-photo" src="elnara-photo.jpg" alt="Эльнара Рустамкызы">
+      <div class="hero-photo-tint"></div>
+      <span class="hero-photo-heart"><span class="heart-css" style="--hs:16px;--hc:var(--rose-deep);"></span></span>
+    </div>
   </div>
   <div class="scroll-cue"><div class="line"></div>скролль</div>
 </section>
@@ -352,32 +399,6 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   </div>
 </section>
 
-<!-- ================= МОИ АККАУНТЫ ================= -->
-<section id="accounts">
-  <div class="blob-soft" style="width:230px;height:230px;background:var(--terracotta);opacity:.35;top:10%;left:-80px;animation-delay:-3s;"></div>
-  <div class="blob-soft" style="width:280px;height:280px;background:var(--blush);bottom:-60px;right:-70px;animation-delay:-9s;"></div>
-  <div class="eyebrow reveal">Мои аккаунты</div>
-  <h2 class="section-title reveal">Где ещё меня <em>найти</em></h2>
-  <div class="acc-grid">
-    <a class="acc-card reveal" href="https://github.com/elnaradr02-pixel" target="_blank" rel="noopener">
-      <div class="acc-icon gh">⌥</div>
-      <h3>GitHub</h3>
-      <!-- ПРАВЬ ЗДЕСЬ -->
-      <p>Код моих проектов: от лендингов до интерактивных лендингов-уроков. Заглядывай, если интересно, как это устроено внутри.</p>
-      <span class="acc-link">github.com/elnaradr02-pixel <span class="arrow">↗</span></span>
-      <div class="acc-deco">GH</div>
-    </a>
-    <a class="acc-card reveal" href="https://t.me/ellea717" target="_blank" rel="noopener">
-      <div class="acc-icon tg">✈</div>
-      <h3>Telegram-канал</h3>
-      <!-- ПРАВЬ ЗДЕСЬ -->
-      <p>Лайфхаки, полезные посты и то, что я узнаю по пути — про код, дизайн и создание своих проектов.</p>
-      <span class="acc-link">t.me/ellea717 <span class="arrow">↗</span></span>
-      <div class="acc-deco">TG</div>
-    </a>
-  </div>
-</section>
-
 <!-- ================= ДЕМОНСТРАЦИЯ РАБОТ ================= -->
 <section id="works">
   <div class="blob-soft" style="width:240px;height:240px;background:var(--sand);top:5%;right:-70px;animation-delay:-4s;"></div>
@@ -389,14 +410,18 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
 
     <div class="work-card reveal" data-tilt>
       <div class="work-media wm-1">
-        <!-- ЗАМЕНИ ЭТОТ БЛОК НА <img src="скриншот.jpg" alt="..."> КОГДА БУДУТ СКРИНШОТЫ -->
-        <span>alfa-z.kz — превью скоро</span>
+        <!-- ЗАМЕНИ ЭТОТ БЛОК НА <img src="скриншот.jpg" alt="..."> КОГДА БУДЕТ СКРИНШОТ -->
+        <div class="tag-soon">сайт в сети</div>
+        <span>alfa-z.kz</span>
       </div>
       <div class="work-body">
         <h3>Alfa Z — сайт школы программирования</h3>
-        <p>Полноценный лендинг для школы программирования для подростков: курсы, цены, расписание, отзывы, форма записи. Разработан с применением AI-assisted development и выведен в продакшен.</p>
+        <p>Лендинг с нестандартной палитрой вместо шаблонов конкурентов, полностью адаптирован под мобильные.</p>
         <div class="tag-row"><span>Лендинг</span><span>AI-assisted dev</span><span>Продакшен</span></div>
-        <a class="work-link" href="https://alfa-z.kz/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+        <div class="work-links">
+          <a class="work-link" href="https://alfa-z.kz/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+          <a class="work-link work-link--case" href="#case-1">Кейс ↓</a>
+        </div>
       </div>
     </div>
 
@@ -407,9 +432,12 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
       </div>
       <div class="work-body">
         <h3>Alfa Z — пробный урок и редактор страницы</h3>
-        <p>Интерактивное пробное занятие: ученик проходит квиз, мини-игру и собирает свою страницу-портфолио во встроенном редакторе кода. RU и KZ версии, для ученика и для учителя.</p>
+        <p>Ученик проходит квиз и мини-игру и собирает свою страницу-портфолио во встроенном редакторе кода.</p>
         <div class="tag-row"><span>Интерактив</span><span>Геймификация</span><span>RU / KZ</span></div>
-        <a class="work-link" href="demos/Редактор-страницы_Alfa-Z_УЧЕНИК_KZ.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+        <div class="work-links">
+          <a class="work-link" href="demos/Редактор-страницы_Alfa-Z_УЧЕНИК_KZ.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+          <a class="work-link work-link--case" href="#case-2">Кейс ↓</a>
+        </div>
       </div>
     </div>
 
@@ -420,9 +448,12 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
       </div>
       <div class="work-body">
         <h3>Cap Education — пробный урок нового поколения</h3>
-        <p>Такая же логика урока-игры для другого образовательного бренда: свой сценарий, свой редактор страницы, своя механика прогресса и проверки заданий.</p>
+        <p>Та же механика пробного урока для другого образовательного бренда: свой сценарий и редактор страницы.</p>
         <div class="tag-row"><span>Интерактив</span><span>UX для обучения</span><span>RU / KZ</span></div>
-        <a class="work-link" href="demos/Редактор-сайта_УЧЕНИК.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+        <div class="work-links">
+          <a class="work-link" href="demos/Редактор-сайта_УЧЕНИК.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+          <a class="work-link work-link--case" href="#case-2">Кейс ↓</a>
+        </div>
       </div>
     </div>
 
@@ -433,9 +464,12 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
       </div>
       <div class="work-body">
         <h3>Урок «Vibe-coding: оживляем бота через ИИ»</h3>
-        <p>Полностью интерактивный урок для GetCourse: конструктор промта с живым индикатором качества, эмулятор переписки с Telegram-ботом, поиск бага, оставленного ИИ, флеш-карточки, тест и раскрывающееся домашнее задание со шпаргалкой. Один из десятков уроков курса — методика и интерактив разработаны с применением AI-assisted development.</p>
+        <p>Конструктор промта с живым индикатором, эмулятор Telegram-бота, поиск бага от ИИ, флеш-карточки, тест и ДЗ со шпаргалкой. Один из десятков уроков курса.</p>
         <div class="tag-row"><span>Интерактивный урок</span><span>AI-assisted dev</span><span>Геймификация</span></div>
-        <a class="work-link" href="demos/cap-education-lesson-2-backend.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+        <div class="work-links">
+          <a class="work-link" href="demos/cap-education-lesson-2-backend.html" target="_blank" rel="noopener">Открыть демо ↗</a>
+          <a class="work-link work-link--case" href="#case-3">Кейс ↓</a>
+        </div>
       </div>
     </div>
 
@@ -454,6 +488,63 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   </div>
 </section>
 
+<!-- ================= КЕЙСЫ ================= -->
+<section id="cases">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--blush);top:-20px;right:6%;animation-delay:-5s;"></div>
+  <div class="blob-soft" style="width:200px;height:200px;background:var(--sand);bottom:10%;left:-60px;animation-delay:-10s;"></div>
+  <div class="eyebrow reveal">Кейсы</div>
+  <h2 class="section-title reveal">Как я <em>решаю</em> задачи</h2>
+
+  <div class="case-list">
+
+    <article class="case-card reveal" id="case-1">
+      <div class="case-head"><span class="case-num">01</span><h3>Сайт школы Alfa-Z — нестандартный дизайн вместо шаблона конкурентов</h3></div>
+      <div class="case-block"><span class="case-label problem">Проблема</span>
+        <p>Изучила сайты конкурирующих IT-школ и заметила, что почти все используют одну и ту же визуальную формулу: зелёный, фиолетовый, неоновый, синий, чёрный. Сайты выглядят взаимозаменяемо, перегружены «водой» и часто плохо работают на мобильных устройствах.</p></div>
+      <div class="case-block"><span class="case-label solution">Решение</span>
+        <p>Спроектировала и самостоятельно реализовала сайт с нестандартной палитрой (полночный, коралловый, кремовый тона), которой не встречала у конкурентов. Убрала лишний текст — только конкретная информация о том, чем занимаются дети на курсах, с примерами работ на первом экране. Сайт адаптирован и протестирован в мобильной и веб-версии без лагов.</p></div>
+      <div class="case-block"><span class="case-label result">Результат</span>
+        <p>Сайт запущен (16 июля 2026), опубликован на GitHub, работает стабильно на всех устройствах. Родитель, зайдя на сайт, за секунды понимает, чем будет заниматься ребёнок — без необходимости звонить менеджеру.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>GitHub</span><span>ИИ-агенты для вёрстки и контента</span></div>
+    </article>
+
+    <article class="case-card reveal" id="case-2">
+      <div class="case-head"><span class="case-num">02</span><h3>Конструктор пробного урока — персонализация вместо скучного Zoom-занятия</h3></div>
+      <div class="case-block"><span class="case-label problem">Проблема</span>
+        <p>Стандартный формат пробного урока — час в Zoom, где ребёнок просто повторяет действия за преподавателем. Формат скучный и плохо продаёт курс: родитель не видит наглядного результата, ребёнок не вовлечён.</p></div>
+      <div class="case-block"><span class="case-label solution">Решение</span>
+        <p>Разработала HTML-страницу со встроенным редактором сайта. Ребёнок сам вводит имя, возраст, интересы, будущую профессию, загружает фото семьи/питомца/любимого места, выбирает структуру и оформление — и на выходе получает свой собственный мини-сайт-портфолио. На сайте также размещены интерактивные примеры каждого из 5 направлений школы (например, мини-игра на Unity, демо шифра Цезаря для курса по алгоритмам), чтобы ребёнок на практике понял, чем будет заниматься. В конце — тест из 5 вопросов, который помогает определить подходящее направление.</p></div>
+      <div class="case-block"><span class="case-label result">Результат</span>
+        <p>Готовый сайт становится поводом похвастаться перед семьёй — это снимает основную часть работы отдела продаж ещё до звонка менеджера. Система уже работает; предстоит внедрение на Alfa-Z.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>Продуктовое проектирование</span><span>Пользовательский путь</span></div>
+    </article>
+
+    <article class="case-card reveal" id="case-3">
+      <div class="case-head"><span class="case-num">03</span><h3>Формат интерактивных уроков — вовлечение и запоминание через симуляторы</h3></div>
+      <div class="case-block"><span class="case-label problem">Проблема</span>
+        <p>Типичный курс — видеоурок плюс сплошной текст плюс непонятное домашнее задание. Ученики застревают на домашних заданиях и часто вовсе перестают посещать занятия.</p></div>
+      <div class="case-block"><span class="case-label solution">Решение</span>
+        <p>Спроектировала и реализовала новый формат урока на HTML/CSS/JS с анимациями («Blue Reflect»), где цветовая схема меняется под каждый урок. Под каждой темой — живой интерактивный симулятор, соответствующий материалу: например, для урока по разработке телеграм-ботов — рабочий симулятор бота, который можно «пощупать» ещё до того, как писать код. Домашние задания сделаны двухуровневыми (сложное и, если не получилось, — облегчённая версия), под каждым спрятана шпаргалка, чтобы ученик не бросал курс из-за одного сложного задания. В конце каждого урока — квиз из 7–8 вопросов с объяснениями и карточки для запоминания (переворачиваются по клику).</p></div>
+      <div class="case-block"><span class="case-label result">Результат</span>
+        <p>Формат снижает отток учеников на сложных темах и ускоряет запоминание материала за счёт практики руками и повторения через карточки/квиз.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>Методология обучения</span><span>Геймификация</span></div>
+    </article>
+
+  </div>
+
+  <!-- ПРАВЬ ЗДЕСЬ: замени на реальную цитату от Alfa-Z / ученика / родителя, когда появится -->
+  <div class="testimonial reveal">
+    <span class="testimonial-badge">заполни, когда будет отзыв</span>
+    <div class="testimonial-mark">“</div>
+    <p class="testimonial-quote">Здесь будет короткая цитата от того, кто пользовался результатом — например, от команды Alfa-Z, ученика или родителя. Пара предложений о том, что это правда сработало.</p>
+    <div class="testimonial-author">Имя, роль — впиши сюда</div>
+  </div>
+
+  <div class="case-conclusion reveal">
+    <p><b>Что объединяет все кейсы:</b> увидеть точку, где пользователь (родитель или ученик) теряет интерес или застревает, и закрыть её через интерактивное решение, спроектированное и реализованное с помощью ИИ-инструментов и AI-агентов, без классической команды разработки.</p>
+  </div>
+</section>
+
 <!-- ================= УСЛУГИ / ПРОДАЮЩИЕ ПОСТЫ ================= -->
 <section id="services">
   <div class="blob-soft" style="width:250px;height:250px;background:var(--terracotta);opacity:.3;top:-30px;left:8%;animation-delay:-2s;"></div>
@@ -466,19 +557,19 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
       <h3>Сайт и лендинг под ключ</h3>
       <!-- ПРАВЬ ЗДЕСЬ: цена/условия -->
       <p>Дизайн, вёрстка, анимация и публикация — от идеи до рабочей ссылки, которую можно скинуть клиентам хоть сегодня.</p>
-      <div class="service-price">от … ₸ · срок обсуждается</div>
+      <div class="service-price">Цена — индивидуально, после короткого созвона</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">02</div>
       <h3>Интерактивные уроки и геймификация</h3>
       <p>Структура урока, логика заданий, квизы, мини-игры и прогресс — превращаю скучную теорию в то, что хочется пройти до конца.</p>
-      <div class="service-price">от … ₸ · срок обсуждается</div>
+      <div class="service-price">Цена — индивидуально, после короткого созвона</div>
     </div>
     <div class="service-card reveal">
       <div class="service-num">03</div>
       <h3>AI-assisted development</h3>
       <p>Ускоряю разработку с помощью ИИ-инструментов, сохраняя полный контроль над качеством: от идеи до готового кликабельного продукта.</p>
-      <div class="service-price">от … ₸ · срок обсуждается</div>
+      <div class="service-price">Цена — индивидуально, после короткого созвона</div>
     </div>
   </div>
 </section>
@@ -494,6 +585,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     <div class="contact-links reveal">
       <a href="https://t.me/elleaa717" target="_blank" rel="noopener">✈ Telegram: @elleaa717</a>
       <a href="mailto:elnara.d.r02@gmail.com">✉ elnara.d.r02@gmail.com</a>
+      <a href="https://github.com/elnaradr02-pixel" target="_blank" rel="noopener">⌥ GitHub</a>
     </div>
   </div>
 </section>
@@ -574,7 +666,7 @@ function releaseTouchCursor(){
 }
 window.addEventListener('touchend',releaseTouchCursor,{passive:true});
 window.addEventListener('touchcancel',releaseTouchCursor,{passive:true});
-document.querySelectorAll('a,button,.work-card,.service-card,.acc-card').forEach(el=>{
+document.querySelectorAll('a,button,.work-card,.service-card,.case-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.classList.add('hovering'));
   el.addEventListener('mouseleave',()=>ring.classList.remove('hovering'));
 });
