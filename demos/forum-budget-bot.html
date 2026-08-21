@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бот учёта расходов форума — демо</title>
+<meta name="description" content="Telegram-бот для командного учёта расходов мероприятия: одно сообщение — трата записана, без форм и подтверждений.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FDF6F0; --sand:#F6E9DA; --blush:#F8DEE2;
+  --ink:#2B2130; --ink-soft: rgba(43,33,48,.62); --ink-softer: rgba(43,33,48,.42);
+  --rose:#CC7A8C; --rose-deep:#A85068; --terracotta:#E0A182;
+  --card:#FFFFFF; --line: rgba(43,33,48,.1);
+  --radius:26px; --radius-sm:16px;
+  --shadow:0 26px 60px rgba(43,33,48,.09); --shadow-sm:0 10px 26px rgba(43,33,48,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;padding:0 0 60px;}
+h1,h2,h3,.bb-mono{font-family:'Bricolage Grotesque',sans-serif;}
+.bb-wrap{max-width:920px;margin:0 auto;padding:0 6vw;}
+code,.bb-code{font-family:'SF Mono',Consolas,monospace;}
+
+/* hero */
+.bb-hero{background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#fff;padding:64px 6vw 56px;text-align:center;position:relative;overflow:hidden;}
+.bb-hero::before{content:'';position:absolute;width:340px;height:340px;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 70%);border-radius:50%;top:-140px;right:-80px;}
+.bb-hero::after{content:'';position:absolute;width:260px;height:260px;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);border-radius:50%;bottom:-120px;left:-60px;}
+.bb-eyebrow{position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:7px 16px;border-radius:100px;font-size:.78rem;font-weight:700;letter-spacing:.3px;}
+.bb-hero h1{position:relative;z-index:2;font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:800;letter-spacing:-.5px;margin:18px auto 12px;max-width:640px;}
+.bb-hero p{position:relative;z-index:2;max-width:560px;margin:0 auto;opacity:.95;font-size:1.02rem;}
+.bb-proof{position:relative;z-index:2;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px;}
+.bb-proof span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);padding:8px 16px;border-radius:100px;font-size:.8rem;font-weight:700;}
+
+/* section shell */
+.bb-sec{padding:52px 0 0;}
+.bb-sec-title{display:flex;align-items:center;gap:12px;font-size:1.4rem;font-weight:800;margin-bottom:6px;}
+.bb-sec-sub{color:var(--ink-soft);font-size:.94rem;margin-bottom:22px;max-width:640px;}
+.bb-num{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--blush);color:var(--rose-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;}
+
+/* ---------------- interactive simulator ---------------- */
+.bb-sim{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.bb-sim-top{background:var(--ink);color:var(--cream);padding:16px 22px;display:flex;align-items:center;gap:12px;}
+.bb-sim-top .bb-av{width:38px;height:38px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.bb-sim-top b{display:block;font-size:.95rem;}
+.bb-sim-top small{opacity:.65;font-size:.78rem;}
+.bb-sim-body{padding:20px;min-height:260px;max-height:420px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--sand);}
+.bb-msg{max-width:82%;padding:0;border-radius:16px;font-size:.92rem;line-height:1.55;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.bb-msg.me{align-self:flex-end;background:var(--blush);padding:10px 14px;border-bottom-right-radius:4px;}
+.bb-msg.bot{align-self:flex-start;background:#fff;padding:14px 16px;border-bottom-left-radius:4px;width:min(320px,90%);}
+.bb-msg.bot.undone{opacity:.45;}
+.bb-msg.bot.undone .bb-bot-title{text-decoration:line-through;}
+.bb-bot-title{font-weight:700;margin-bottom:6px;}
+.bb-bot-meta{color:var(--ink-softer);font-size:.78rem;margin-bottom:10px;}
+.bb-bot-event{font-weight:700;font-size:.86rem;margin-bottom:2px;}
+.bb-bot-balance{font-size:.84rem;color:var(--ink-soft);margin-bottom:6px;}
+.bb-bar{font-family:'SF Mono',Consolas,monospace;font-size:.86rem;letter-spacing:-1px;margin-bottom:12px;}
+.bb-bot-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.bb-bot-actions button{border:1px solid var(--line);background:var(--cream);border-radius:9px;padding:6px 10px;font-size:.76rem;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;color:var(--ink-soft);}
+.bb-bot-actions button:hover{border-color:var(--rose);color:var(--rose-deep);background:var(--blush);}
+.bb-bot-actions button:disabled{opacity:.4;cursor:default;}
+.bb-bot-actions button:disabled:hover{border-color:var(--line);color:var(--ink-soft);background:var(--cream);}
+
+.bb-sim-chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px;background:var(--card);border-top:1px solid var(--line);}
+.bb-chip{border:1px solid var(--line);background:var(--cream);border-radius:100px;padding:8px 14px;font-size:.8rem;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;color:var(--ink-soft);}
+.bb-chip:hover{border-color:var(--rose);color:var(--rose-deep);}
+.bb-sim-input{display:flex;gap:10px;padding:14px 20px 20px;background:var(--card);}
+.bb-sim-input input{flex:1;border:1.5px solid var(--line);border-radius:100px;padding:12px 18px;font-family:inherit;font-size:.9rem;outline:none;transition:border-color .15s;}
+.bb-sim-input input:focus{border-color:var(--rose);}
+.bb-sim-input button{border:none;background:var(--rose-deep);color:#fff;border-radius:100px;padding:0 22px;font-weight:700;font-family:inherit;cursor:pointer;font-size:.88rem;}
+.bb-sim-input button:hover{background:var(--ink);}
+.bb-sim-hint{padding:0 20px 16px;color:var(--ink-softer);font-size:.78rem;}
+
+/* ---------------- reference cards ---------------- */
+.bb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.bb-card{background:var(--card);border-radius:var(--radius-sm);padding:24px 26px;box-shadow:var(--shadow-sm);}
+.bb-card h3{font-size:1.02rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.bb-card p{color:var(--ink-soft);font-size:.9rem;line-height:1.6;}
+.bb-card p+p{margin-top:8px;}
+.bb-card .bb-example{display:inline-block;margin-top:8px;background:var(--sand);border-radius:8px;padding:6px 10px;font-family:'SF Mono',Consolas,monospace;font-size:.78rem;color:var(--ink);}
+
+/* table-style command list */
+.bb-cmdlist{background:var(--card);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);overflow:hidden;}
+.bb-cmdrow{display:flex;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line);align-items:baseline;}
+.bb-cmdrow:last-child{border-bottom:none;}
+.bb-cmdrow code{flex:0 0 auto;min-width:130px;font-weight:700;color:var(--rose-deep);font-size:.84rem;}
+.bb-cmdrow span{color:var(--ink-soft);font-size:.88rem;}
+
+/* error states */
+.bb-errlist{display:flex;flex-direction:column;gap:10px;}
+.bb-err{background:var(--card);border-left:4px solid var(--terracotta);border-radius:12px;padding:14px 18px;box-shadow:var(--shadow-sm);}
+.bb-err b{display:block;font-size:.88rem;margin-bottom:3px;font-family:'SF Mono',Consolas,monospace;}
+.bb-err span{color:var(--ink-soft);font-size:.86rem;}
+
+.bb-note{margin-top:44px;text-align:center;color:var(--ink-softer);font-size:.84rem;padding-top:22px;border-top:1px solid var(--line);}
+
+@media (max-width:680px){
+  .bb-grid{grid-template-columns:1fr;}
+  .bb-cmdrow{flex-direction:column;gap:2px;}
+  .bb-hero{padding:52px 6vw 44px;}
+}
+</style>
+</head>
+<body>
+
+<div class="bb-hero">
+  <span class="bb-eyebrow">🤖 Telegram-бот · демо</span>
+  <h1>Бот учёта расходов форума</h1>
+  <p>Бот считает общий бюджет мероприятия. Записать трату — одно сообщение, ничего подтверждать не надо. Ниже — рабочий симулятор, можно написать боту прямо сейчас.</p>
+  <div class="bb-proof">
+    <span>⏱ от идеи до прод-версии — 6 часов непрерывной работы</span>
+    <span>🖥 свой сервер, работает 24/7</span>
+    <span>🤖 @CapOPbot — уже в бою</span>
+  </div>
+</div>
+
+<div class="bb-wrap">
+
+  <!-- ================= ИНТЕРАКТИВНЫЙ СИМУЛЯТОР ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">▶</span> Попробуй сам</div>
+    <div class="bb-sec-sub">Напиши, что купили и за сколько — одним сообщением, как обычному человеку. Например «такси 4500» или «2000 вода».</div>
+
+    <div class="bb-sim">
+      <div class="bb-sim-top">
+        <span class="bb-av">💼</span>
+        <span><b>Форум 12 сентября</b><small>бот учёта расходов · бюджет 1 000 000 ₸</small></span>
+      </div>
+      <div class="bb-sim-body" id="bbBody"></div>
+      <div class="bb-sim-chips">
+        <button class="bb-chip" data-msg="аренда зала 500000">аренда зала 500000</button>
+        <button class="bb-chip" data-msg="такси 4500">такси 4500</button>
+        <button class="bb-chip" data-msg="500к декор">500к декор</button>
+        <button class="bb-chip" data-msg="кофе 2 тыс">кофе 2 тыс</button>
+      </div>
+      <div class="bb-sim-input">
+        <input type="text" id="bbInput" placeholder="напиши свою трату, например «вода 500»" maxlength="60">
+        <button id="bbSend">Отправить</button>
+      </div>
+      <div class="bb-sim-hint">Это демо-версия: категория подбирается по ключевым словам, дата — сегодняшняя, бюджет сбрасывается при обновлении страницы.</div>
+    </div>
+  </div>
+
+  <!-- ================= КАК ЗАПИСАТЬ ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">1</span> Как записать расход</div>
+    <div class="bb-grid">
+      <div class="bb-card">
+        <h3>💬 Одно сообщение</h3>
+        <p>Пишете боту, что купили и за сколько — как обычному человеку. Подтверждать не нужно, запись сохраняется сразу.</p>
+        <span class="bb-example">аренда зала 500000</span>
+      </div>
+      <div class="bb-card">
+        <h3>🔤 Сумма как удобно</h3>
+        <p>Бот понимает 500000, 500 000, 500к, 500 тыс, 2млн и 500000₸ — это всё одно и то же. Слова можно ставить до суммы или после.</p>
+        <span class="bb-example">такси 4500 = 4500 такси</span>
+      </div>
+      <div class="bb-card">
+        <h3>🏷 Категория — сама</h3>
+        <p>Бот подбирает категорию по словам в сообщении, дата проставляется сегодняшняя автоматически.</p>
+      </div>
+      <div class="bb-card">
+        <h3>📷 Чек</h3>
+        <p>Сфотографируйте и пришлите фото следующим сообщением — бот прикрепит его к последней записи. Кнопка «Чек» нужна, если чек нашёлся позже.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ОШИБЛИСЬ ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">2</span> Если ошиблись</div>
+    <div class="bb-cmdlist">
+      <div class="bb-cmdrow"><code>✏️ Поправить</code><span>не та сумма или категория — кнопка под записью.</span></div>
+      <div class="bb-cmdrow"><code>↩️ Отменить</code><span>записали лишнее — кнопка под записью, либо команда /undo в течение 15 минут.</span></div>
+      <div class="bb-cmdrow"><code>/add</code><span>забыли формат — бот сам предложит категории кнопками.</span></div>
+      <div class="bb-cmdrow"><code>прошло больше времени</code><span>попросите администратора — он удалит запись по номеру.</span></div>
+    </div>
+  </div>
+
+  <!-- ================= ПОСМОТРЕТЬ ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">3</span> Посмотреть</div>
+    <div class="bb-cmdlist">
+      <div class="bb-cmdrow"><code>/balance</code><span>остаток по активным бюджетам</span></div>
+      <div class="bb-cmdrow"><code>/day</code><span>расходы за дату</span></div>
+      <div class="bb-cmdrow"><code>/my</code><span>мои расходы за текущий бюджет</span></div>
+      <div class="bb-cmdrow"><code>/last</code><span>последние 10 записей команды</span></div>
+      <div class="bb-cmdrow"><code>/help</code><span>эта же справка внутри бота</span></div>
+    </div>
+    <div class="bb-sim-hint" style="margin-top:14px;">В самом Telegram эти же действия доступны кнопками снизу экрана — «Остаток», «За день», «Мои расходы», «Последние» — набирать команды необязательно.</div>
+  </div>
+
+  <!-- ================= ЕСЛИ ЧТО-ТО НЕ ТАК ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">4</span> Если что-то не так</div>
+    <div class="bb-errlist">
+      <div class="bb-err"><b>«Нет доступа»</b><span>вас ещё не добавили — попросите у администратора код приглашения.</span></div>
+      <div class="bb-err"><b>«На сегодня нет активного бюджета»</b><span>администратор не создал бюджет на эту дату — расход пока не записать.</span></div>
+      <div class="bb-err"><b>Бот просит описание</b><span>вы отправили голое число вроде «1» — добавьте пару слов: «вода 500».</span></div>
+      <div class="bb-err"><b>Бот не понял сообщение</b><span>в нём не нашлось суммы. Команды пишутся со слэшем: /balance, а не «balance».</span></div>
+    </div>
+  </div>
+
+  <!-- ================= АДМИНИСТРАТОРАМ ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">5</span> Администраторам</div>
+    <div class="bb-cmdlist">
+      <div class="bb-cmdrow"><code>/budget_new</code><span>создать бюджет: название, лимит, даты</span></div>
+      <div class="bb-cmdrow"><code>/budget_list</code><span>список бюджетов и остатки</span></div>
+      <div class="bb-cmdrow"><code>/budget_close</code><span>закрыть бюджет и получить итоги: разбивку по категориям и участникам, прогресс-бар и файл xlsx</span></div>
+      <div class="bb-cmdrow"><code>/invite</code><span>одноразовый код для нового участника</span></div>
+      <div class="bb-cmdrow"><code>/users</code><span>участники, роли, отключение доступа</span></div>
+      <div class="bb-cmdrow"><code>/delete &lt;id&gt;</code><span>удалить запись по номеру</span></div>
+      <div class="bb-cmdrow"><code>/sync</code><span>пересинхронизация с Google Таблицей</span></div>
+      <div class="bb-cmdrow"><code>/report /export</code><span>отчёт за период и выгрузка в Excel</span></div>
+      <div class="bb-cmdrow"><code>/stats</code><span>техническая сводка — проверить, что бот и таблица живы</span></div>
+    </div>
+  </div>
+
+  <!-- ================= РЕАЛЬНЫЙ ОТЧЁТ ================= -->
+  <div class="bb-sec">
+    <div class="bb-sec-title"><span class="bb-num">6</span> Как выглядит закрытие бюджета</div>
+    <div class="bb-sec-sub">Реальный ответ бота на /budget_close — из рабочего чата команды.</div>
+    <div class="bb-sim" style="max-width:400px;">
+      <div class="bb-sim-body" style="min-height:auto;">
+        <div class="bb-msg me">/budget_close</div>
+        <div class="bb-msg bot" style="width:100%;">
+          <div class="bb-bot-title">🏁 Бюджет «форум 22 август» закрыт</div>
+          <div class="bb-bot-meta">Период: 22.08.2026 — 23.08.2026</div>
+          <div class="bb-bot-balance">Лимит: 1 000 000 ₸ · Потрачено: 3 000 ₸<br>Остаток: 997 000 ₸ (99,7 %)</div>
+          <div class="bb-bar">[░░░░░░░░░░░░░░░░] 0 % 🟢</div>
+          <div class="bb-bot-meta">По категориям: 🚗 Транспорт — 3 000 ₸ (100 %)<br>По участникам: Эльнара — 3 000 ₸ (1)</div>
+          <div class="bb-bot-actions"><button disabled>📎 форум-22-август.xlsx · 6.3 KB</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bb-note">Без активного бюджета на нужную дату команда не сможет вносить расходы — создавайте бюджет заранее, до начала форума.<br>Все расходы дублируются в Google Таблицу в течение минуты. Бот работает круглосуточно на отдельном сервере.</div>
+
+</div>
+
+<script>
+(function(){
+  const TOTAL = 1000000;
+  let spent = 0;
+  let entries = []; // {id, label, emoji, amount}
+  let idSeq = 1;
+
+  const body = document.getElementById('bbBody');
+  const input = document.getElementById('bbInput');
+
+  const CATS = [
+    [/аренда|зал/i, '🏛', 'Аренда зала'],
+    [/такси|убер|яндекс.?такси/i, '🚕', 'Такси'],
+    [/вода/i, '💧', 'Вода'],
+    [/кофе|чай/i, '☕', 'Кофе'],
+    [/обед|еда|ланч|кейтеринг|питани/i, '🍽', 'Еда'],
+    [/декор|шар|цвет/i, '🎈', 'Декор'],
+    [/печат|баннер|полиграф/i, '🖨', 'Печать'],
+    [/канц|бумаг|ручк/i, '🖊', 'Канцелярия'],
+    [/реклам|таргет|smm/i, '📣', 'Реклама'],
+    [/сувенир|подарк/i, '🎁', 'Сувениры'],
+  ];
+
+  function parseAmount(raw){
+    let text = raw.trim();
+    // merge grouped digits like "500 000" -> "500000"
+    let merged = text.replace(/(\d)[\s ](?=\d{3}\b)/g, '$1');
+    const m = merged.match(/(\d+(?:[.,]\d+)?)\s*(млн|миллион|к\b|тыс\.?|тысяч)?/i);
+    if(!m) return null;
+    let num = parseFloat(m[1].replace(',', '.'));
+    const suf = (m[2]||'').toLowerCase();
+    if(suf.startsWith('млн') || suf.startsWith('миллион')) num *= 1000000;
+    else if(suf.startsWith('к') || suf.startsWith('тыс')) num *= 1000;
+    // remove the matched chunk + any ₸ from the text to get the label
+    let label = merged.slice(0, m.index) + merged.slice(m.index + m[0].length);
+    label = label.replace(/₸/g,'').replace(/\s+/g,' ').trim();
+    return {amount: Math.round(num), label};
+  }
+
+  function guessCategory(label){
+    for(const [re, emoji, name] of CATS){
+      if(re.test(label)) return {emoji, name};
+    }
+    if(label){
+      const words = label.split(' ').filter(Boolean);
+      const nice = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+      return {emoji:'💸', name: nice || 'Расход'};
+    }
+    return {emoji:'💸', name:'Расход'};
+  }
+
+  function fmt(n){ return n.toLocaleString('ru-RU'); }
+
+  function bar(pctRemaining){
+    const filled = Math.round((100-pctRemaining)/100*16);
+    return '█'.repeat(filled) + '░'.repeat(16-filled);
+  }
+
+  function addUserMsg(text){
+    const d = document.createElement('div');
+    d.className = 'bb-msg me';
+    d.textContent = text;
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function addBotError(text){
+    const d = document.createElement('div');
+    d.className = 'bb-msg bot';
+    d.innerHTML = '<div class="bb-bot-title">🤔 '+text+'</div>';
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function render(){
+    const remaining = TOTAL - spent;
+    const spentPct = Math.min(100, Math.round(spent/TOTAL*100));
+    const remainingPct = 100 - spentPct;
+    const dot = remainingPct > 30 ? '🟢' : (remainingPct > 10 ? '🟡' : '🔴');
+    return {remaining, spentPct, remainingPct, dot};
+  }
+
+  function addBotMsg(entry){
+    const {remaining, spentPct, dot} = render();
+    const wrap = document.createElement('div');
+    wrap.className = 'bb-msg bot';
+    wrap.dataset.id = entry.id;
+    wrap.innerHTML =
+      '<div class="bb-bot-title">✅ '+entry.emoji+' '+entry.name+' — '+fmt(entry.amount)+' ₸</div>'+
+      '<div class="bb-bot-meta">«'+entry.rawLabel+'» · сегодня</div>'+
+      '<div class="bb-bot-event">💼 Форум 12 сентября</div>'+
+      '<div class="bb-bot-balance">Остаток: '+fmt(remaining)+' ₸ из '+fmt(TOTAL)+' ₸</div>'+
+      '<div class="bb-bar">['+bar(100-spentPct)+'] '+spentPct+' % '+dot+'</div>'+
+      '<div class="bb-bot-actions">'+
+        '<button data-act="receipt" title="прикрепить чек к записи">📷 Чек</button>'+
+        '<button data-act="fix" title="поправить сумму или категорию">✏️ Поправить</button>'+
+        '<button data-act="undo" title="отменить эту запись">↩️ Отменить</button>'+
+      '</div>';
+    body.appendChild(wrap);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function handleSend(raw){
+    const text = raw.trim();
+    if(!text) return;
+    addUserMsg(text);
+
+    if(text.startsWith('/')){
+      setTimeout(()=>addBotError('Команда пока не подключена в демо — в боевом боте здесь сработает '+text+'.'), 300);
+      return;
+    }
+    const parsed = parseAmount(text);
+    if(!parsed || !parsed.amount){
+      setTimeout(()=>addBotError('В сообщении не нашлось суммы. Добавь число, например «вода 500».'), 300);
+      return;
+    }
+    if(!parsed.label){
+      setTimeout(()=>addBotError('Добавь пару слов, что это за трата — например «'+parsed.amount+' вода».'), 300);
+      return;
+    }
+    const cat = guessCategory(parsed.label);
+    spent += parsed.amount;
+    const entry = {id: idSeq++, amount: parsed.amount, name: cat.name, emoji: cat.emoji, rawLabel: parsed.label};
+    entries.push(entry);
+    setTimeout(()=>addBotMsg(entry), 300);
+  }
+
+  body.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    const wrap = btn.closest('.bb-msg.bot');
+    const id = parseInt(wrap.dataset.id, 10);
+    const act = btn.dataset.act;
+    if(act === 'undo'){
+      if(wrap.classList.contains('undone')) return;
+      const entry = entries.find(en => en.id === id);
+      if(entry){
+        spent -= entry.amount;
+        wrap.classList.add('undone');
+        wrap.querySelectorAll('button').forEach(b=>b.disabled=true);
+        const note = document.createElement('div');
+        note.className = 'bb-bot-meta';
+        note.style.marginTop = '8px';
+        note.textContent = '↩️ Запись отменена, бюджет пересчитан.';
+        wrap.appendChild(note);
+      }
+    } else if(act === 'receipt'){
+      btn.textContent = '📷 Чек прикреплён';
+      btn.disabled = true;
+    } else if(act === 'fix'){
+      alert('В боевом боте здесь откроется форма правки суммы/категории для этой записи.');
+    }
+  });
+
+  document.getElementById('bbSend').addEventListener('click', ()=>{
+    handleSend(input.value);
+    input.value = '';
+    input.focus();
+  });
+  input.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ handleSend(input.value); input.value=''; }
+  });
+  document.querySelectorAll('.bb-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=> handleSend(chip.dataset.msg));
+  });
+
+  // seed with the example from the memo
+  handleSend('аренда зала 500000');
+})();
+</script>
+</body>
+</html>
