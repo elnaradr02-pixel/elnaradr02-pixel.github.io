@@ -151,6 +151,15 @@ nav.desktop-nav a:hover::after{width:100%;}
 .burger.open .burger-x.x2{transform:translate(-50%,-50%) rotate(-45deg) scale(1);}
 #mobileMenu{position:fixed;inset:0;background:var(--cream);z-index:105;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transform:translateY(-100%);transition:transform .5s cubic-bezier(.7,0,.3,1);}
 #mobileMenu.open{transform:translateY(0);}
+body.menu-open{overflow:hidden;}
+/* кнопка «закрыть» живёт внутри меню: бургер в шапке лежит под меню (шапка z-index 100 < меню 105) */
+.menu-close{position:absolute;top:18px;right:6vw;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.7);background:linear-gradient(155deg,#fff,var(--blush));box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;transition:transform .25s ease, box-shadow .25s ease;}
+.menu-close:hover{transform:translateY(-2px) rotate(90deg);box-shadow:0 16px 34px rgba(43,33,48,.14);}
+.menu-close span{position:absolute;top:50%;left:50%;width:18px;height:2px;background:var(--ink);border-radius:2px;}
+.menu-close span:first-child{transform:translate(-50%,-50%) rotate(45deg);}
+.menu-close span:last-child{transform:translate(-50%,-50%) rotate(-45deg);}
+.menu-close-hint{position:absolute;bottom:34px;left:0;right:0;text-align:center;font-size:.78rem;font-weight:600;color:var(--ink-softer);}
+@media (max-width:480px){.menu-close{top:16px;right:5vw;}}
 #mobileMenu a{font-size:1.6rem;font-weight:700;font-family:'Bricolage Grotesque',sans-serif;display:inline-flex;align-items:center;gap:14px;}
 
 /* ---------- layout helpers ---------- */
@@ -399,12 +408,14 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   </button>
 </header>
 
-<div id="mobileMenu">
+<div id="mobileMenu" role="dialog" aria-label="Меню сайта">
+  <button class="menu-close" id="menuClose" aria-label="Закрыть меню"><span></span><span></span></button>
   <a href="#about"><span class="heart-css" style="--hs:8px"></span>Обо мне</a>
   <a href="#works"><span class="heart-css" style="--hs:8px"></span>Работы</a>
   <a href="#cases"><span class="heart-css" style="--hs:8px"></span>Кейсы</a>
   <a href="#services"><span class="heart-css" style="--hs:8px"></span>Услуги</a>
   <a href="#contact"><span class="heart-css" style="--hs:8px"></span>Контакты</a>
+  <div class="menu-close-hint">нажми ✕ или Esc, чтобы закрыть</div>
 </div>
 
 <!-- ================= HERO ================= -->
@@ -737,14 +748,17 @@ window.addEventListener('scroll',()=>{
 // ---------- mobile menu ----------
 const burger=document.getElementById('burger');
 const mobileMenu=document.getElementById('mobileMenu');
-burger.addEventListener('click',()=>{
-  burger.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
-});
-mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-  burger.classList.remove('open');
-  mobileMenu.classList.remove('open');
-}));
+const menuClose=document.getElementById('menuClose');
+function setMenu(open){
+  burger.classList.toggle('open',open);
+  mobileMenu.classList.toggle('open',open);
+  document.body.classList.toggle('menu-open',open);
+  burger.setAttribute('aria-expanded',open?'true':'false');
+}
+burger.addEventListener('click',()=>setMenu(!mobileMenu.classList.contains('open')));
+menuClose.addEventListener('click',()=>setMenu(false));
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+window.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
 
 // ---------- custom cursor ----------
 // hidden until a real mouse actually moves, so it never gets stuck
