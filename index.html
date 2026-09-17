@@ -4,7 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Эльнара Рустамкызы — портфолио</title>
-<meta name="description" content="Личное портфолио: сайты, интерактивные уроки и продукты, которые я разрабатываю вручную и с применением AI-assisted development.">
+<meta name="description" content="Эльнара Рустамкызы — портфолио: учебная платформа Alfa Z (Next.js + PostgreSQL), сайты, интерактивные уроки и Telegram-боты. Пишу код руками и ускоряю разработку через AI-assisted development.">
+<meta name="theme-color" content="#FDF6F0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://elnaradr02-pixel.github.io/">
+<!-- превью ссылки в Telegram / Instagram / WhatsApp -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://elnaradr02-pixel.github.io/">
+<meta property="og:title" content="Эльнара Рустамкызы — портфолио">
+<meta property="og:description" content="Учебная платформа Alfa Z, сайты, интерактивные уроки и боты. Код руками + AI-assisted development.">
+<meta property="og:image" content="https://elnaradr02-pixel.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Эльнара Рустамкызы — портфолио">
+<meta name="twitter:description" content="Учебная платформа Alfa Z, сайты, интерактивные уроки и боты.">
+<meta name="twitter:image" content="https://elnaradr02-pixel.github.io/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -193,6 +209,8 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .stat-label{font-size:.85rem;color:var(--ink-soft);margin-top:6px;}
 .skill-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
 .chip{padding:9px 18px;border-radius:100px;background:var(--card);font-size:.85rem;font-weight:600;box-shadow:var(--shadow-sm);}
+.about-text a.about-link{color:var(--rose-deep);font-weight:700;border-bottom:2px solid var(--blush);transition:border-color .3s;}
+.about-text a.about-link:hover{border-color:var(--rose);}
 
 /* ---------- works gallery ---------- */
 .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;}
@@ -217,6 +235,49 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .work-links{display:flex;flex-wrap:wrap;gap:20px;}
 .work-link--case{color:var(--ink-softer);}
 .work-link--case:hover{color:var(--ink);}
+
+/* ---------- скриншоты в карточках работ ---------- */
+.work-media.wm-shot{padding:0;}
+.work-media.wm-shot::before{background:linear-gradient(180deg,rgba(204,122,140,.06),rgba(43,33,48,.22));opacity:1;z-index:2;}
+.work-media.wm-shot::after{display:none;}
+.work-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:1;transform:scale(1.01);transition:transform .8s cubic-bezier(.2,.8,.2,1);}
+.work-card:hover .work-shot{transform:scale(1.05);}
+
+/* ---------- главный проект: учебная платформа ---------- */
+.work-featured{grid-column:1/-1;display:grid;grid-template-columns:1.15fr 1fr;align-items:stretch;}
+.feat-media{position:relative;min-height:440px;overflow:hidden;background:radial-gradient(120% 90% at 0% 0%,#3d2f52 0%,#20182A 55%,#0F0F1A 100%);}
+.feat-media::before{content:'';position:absolute;width:60%;height:60%;border-radius:50%;background:rgba(255,107,71,.38);filter:blur(70px);top:-10%;right:-10%;animation:floatSoft 14s ease-in-out infinite;}
+.feat-win{position:absolute;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(0,0,0,.45);}
+.feat-win img{display:block;width:100%;height:calc(100% - 22px);object-fit:cover;object-position:top center;}
+.feat-win-bar{height:22px;background:#f3ede6;display:flex;align-items:center;gap:5px;padding:0 10px;border-bottom:1px solid rgba(0,0,0,.06);}
+.feat-win-bar i{width:7px;height:7px;border-radius:50%;}
+.feat-win-bar i:nth-child(1){background:#ff5f57;}.feat-win-bar i:nth-child(2){background:#febc2e;}.feat-win-bar i:nth-child(3){background:#28c840;}
+.feat-win-main{left:6%;top:10%;width:74%;aspect-ratio:16/10;}
+.feat-win-lesson{right:-4%;bottom:-6%;width:58%;aspect-ratio:16/10;transform:rotate(-3deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.work-featured:hover .feat-win-lesson{transform:rotate(-1deg) translateY(-8px);}
+.feat-badge{position:absolute;top:18px;left:18px;z-index:3;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:100px;font-size:.72rem;font-weight:700;backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:9px;}
+.feat-badge .heart-css{--hs:8px;--hc:#FF6B47;}
+.feat-body{padding:38px 40px 36px;display:flex;flex-direction:column;justify-content:center;}
+.feat-kicker{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1.6px;color:var(--rose);margin-bottom:12px;}
+.feat-body h3{font-size:clamp(1.4rem,2.2vw,1.8rem);font-weight:800;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px;}
+.feat-body>p{color:var(--ink-soft);font-size:.96rem;line-height:1.65;margin-bottom:22px;}
+.feat-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}
+.feat-stat{background:var(--sand);border-radius:14px;padding:12px 8px;text-align:center;}
+.feat-stat b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:800;color:var(--rose-deep);line-height:1.1;}
+.feat-stat span{display:block;font-size:.68rem;font-weight:600;color:var(--ink-soft);margin-top:4px;line-height:1.25;}
+@media (max-width:1100px){.feat-stats{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:920px){
+  .work-featured{grid-template-columns:1fr;}
+  .feat-media{min-height:0;aspect-ratio:16/11;}
+  .feat-body{padding:28px 26px 30px;}
+  .feat-stats{grid-template-columns:repeat(4,1fr);}
+}
+@media (max-width:560px){
+  .feat-stats{grid-template-columns:repeat(2,1fr);}
+  .feat-win-main{left:5%;top:11%;width:80%;}
+  .feat-win-lesson{width:62%;right:-6%;bottom:-8%;}
+  .feat-badge{top:12px;left:12px;font-size:.66rem;}
+}
 
 /* ---------- case studies ---------- */
 .case-list{display:flex;flex-direction:column;gap:26px;}
@@ -248,8 +309,10 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 }
 
 /* ---------- services / selling posts ---------- */
-.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-.service-card{background:var(--card);border-radius:var(--radius);padding:32px 26px;box-shadow:var(--shadow-sm);position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;}
+.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+@media (max-width:1100px){.service-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:640px){.service-grid{grid-template-columns:1fr;}}
+.service-card{background:var(--card);border-radius:var(--radius);padding:30px 24px;box-shadow:var(--shadow-sm);position:relative;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;}
 .service-card:hover{transform:translateY(-8px) rotate(-.5deg);box-shadow:var(--shadow);}
 .service-num{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:var(--terracotta);margin-bottom:16px;}
 .service-card h3{font-size:1.2rem;font-weight:700;margin-bottom:12px;line-height:1.3;}
@@ -278,7 +341,6 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   .about-grid{grid-template-columns:1fr;}
   .acc-grid{grid-template-columns:1fr;}
   .work-grid{grid-template-columns:1fr;}
-  .service-grid{grid-template-columns:1fr;}
 }
 @media (max-width:760px){
   nav.desktop-nav{display:none;}
@@ -378,18 +440,23 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     <div class="about-text reveal">
       <!-- ПРАВЬ ЗДЕСЬ: текст о себе -->
       <p>Я разрабатываю сайты и цифровые продукты, которые не выглядят как шаблон. Ценю, когда в интерфейсе есть характер: анимация не ради анимации, а деталь, которая работает на впечатление.</p>
+      <p>Последний большой проект — учебная платформа <a href="#work-platform" class="about-link">Alfa Z</a>: full-stack продукт на Next.js и PostgreSQL с кабинетами ученика, преподавателя, куратора и админа, индивидуальными графиками, баллами, оплатами и уведомлениями родителям.</p>
       <p>Отдельно — проектирую интерактивные уроки: с играми, квизами, встроенными редакторами кода и логикой, которая ведёт ученика шаг за шагом, а не просто показывает текст на слайде.</p>
-      <p>Пишу HTML/CSS/JS вручную и применяю AI-assisted development там, где это ускоряет процесс, — без потери в качестве и продуманности деталей.</p>
+      <p>Пишу код руками и применяю AI-assisted development там, где это ускоряет процесс, — без потери в качестве и продуманности деталей.</p>
     </div>
     <div class="reveal">
       <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">учебная платформа в продакшене — full-stack, с нуля</div></div>
         <div class="stat-card"><div class="stat-num">3+</div><div class="stat-label">сданных сайта и лендинга</div></div>
-        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">бренда с интерактивными уроками</div></div>
-        <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">языковые версии проектов (RU/KZ)</div></div>
-        <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">ручной контроль над деталями</div></div>
+        <div class="stat-card"><div class="stat-num">80+</div><div class="stat-label">оформленных интерактивных уроков</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">образовательных бренда · RU / KZ</div></div>
       </div>
       <div class="skill-chips">
+        <span class="chip">Next.js / TypeScript</span>
+        <span class="chip">PostgreSQL / Prisma</span>
         <span class="chip">HTML / CSS / JS</span>
+        <span class="chip">Docker / CI-CD</span>
+        <span class="chip">Telegram-боты</span>
         <span class="chip">AI-assisted development</span>
         <span class="chip">Интерактивные уроки</span>
         <span class="chip">UI-анимация</span>
@@ -408,15 +475,45 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
 
   <div class="work-grid">
 
+    <!-- ГЛАВНЫЙ ПРОЕКТ: учебная платформа Alfa Z -->
+    <article class="work-card work-featured reveal" id="work-platform">
+      <div class="feat-media">
+        <div class="feat-badge"><span class="heart-css"></span>главный проект · 2026</div>
+        <div class="feat-win feat-win-main">
+          <div class="feat-win-bar"><i></i><i></i><i></i></div>
+          <img src="img/platform-login.jpg" alt="Alfa Z — вход в учебную платформу" loading="lazy" width="1200" height="750">
+        </div>
+        <div class="feat-win feat-win-lesson">
+          <div class="feat-win-bar"><i></i><i></i><i></i></div>
+          <img src="img/platform-lesson.jpg" alt="Alfa Z — интерактивный урок внутри платформы" loading="lazy" width="1200" height="750">
+        </div>
+      </div>
+      <div class="feat-body">
+        <div class="feat-kicker">Учебная платформа · в продакшене</div>
+        <h3>Alfa Z Platform — учебная платформа с контролем обучения</h3>
+        <p>Full-stack продукт, спроектированный и собранный с нуля: кабинеты ученика, преподавателя, куратора и админа, индивидуальный график от даты старта каждого ученика, ДЗ и тесты, баллы и лидерборд, учёт оплат, сертификаты, уведомления родителям в WhatsApp. Интерфейс RU / KZ, тёмная тема, PWA.</p>
+        <div class="feat-stats">
+          <div class="feat-stat"><b>4</b><span>роли и матрица доступа</span></div>
+          <div class="feat-stat"><b>89</b><span>таблиц в базе данных</span></div>
+          <div class="feat-stat"><b>78k</b><span>строк TypeScript</span></div>
+          <div class="feat-stat"><b>113</b><span>файлов с тестами</span></div>
+        </div>
+        <div class="tag-row"><span>Next.js 15</span><span>TypeScript</span><span>PostgreSQL / Prisma</span><span>Auth.js</span><span>Docker + CI/CD</span><span>AI-assisted dev</span></div>
+        <div class="work-links">
+          <a class="work-link" href="https://platformalfa-z.kz/" target="_blank" rel="noopener">Открыть платформу ↗</a>
+          <a class="work-link work-link--case" href="#case-platform">Кейс ↓</a>
+        </div>
+      </div>
+    </article>
+
     <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-1">
-        <!-- ЗАМЕНИ ЭТОТ БЛОК НА <img src="скриншот.jpg" alt="..."> КОГДА БУДЕТ СКРИНШОТ -->
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/alfa-z-site.jpg" alt="alfa-z.kz — сайт школы программирования" loading="lazy" width="1200" height="750">
         <div class="tag-soon">сайт в сети</div>
-        <span>alfa-z.kz</span>
       </div>
       <div class="work-body">
         <h3>Alfa Z — сайт школы программирования</h3>
-        <p>Лендинг с нестандартной палитрой вместо шаблонов конкурентов, полностью адаптирован под мобильные.</p>
+        <p>Лендинг с нестандартной палитрой вместо шаблонов конкурентов, три языка (KZ / RU / EN), полностью адаптирован под мобильные.</p>
         <div class="tag-row"><span>Лендинг</span><span>AI-assisted dev</span><span>Продакшен</span></div>
         <div class="work-links">
           <a class="work-link" href="https://alfa-z.kz/" target="_blank" rel="noopener">Открыть сайт ↗</a>
@@ -426,9 +523,9 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </div>
 
     <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-2">
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-alfa-z-editor.jpg" alt="Alfa Z — редактор страницы ученика на пробном уроке" loading="lazy" width="1200" height="750">
         <div class="tag-soon">живое демо</div>
-        <span>Alfa Z — пробный урок</span>
       </div>
       <div class="work-body">
         <h3>Alfa Z — пробный урок и редактор страницы</h3>
@@ -442,9 +539,9 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </div>
 
     <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-3">
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-cap-editor.jpg" alt="Cap Education — редактор сайта ученика" loading="lazy" width="1200" height="750">
         <div class="tag-soon">живое демо</div>
-        <span>Cap Education — пробный урок</span>
       </div>
       <div class="work-body">
         <h3>Cap Education — пробный урок нового поколения</h3>
@@ -458,9 +555,9 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </div>
 
     <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-2">
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-cap-lesson2.jpg" alt="Cap Education — урок 2, Vibe-coding: оживляем бота через ИИ" loading="lazy" width="1200" height="750">
         <div class="tag-soon">живое демо</div>
-        <span>Cap Education — Урок 2</span>
       </div>
       <div class="work-body">
         <h3>Урок «Vibe-coding: оживляем бота через ИИ»</h3>
@@ -474,9 +571,9 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </div>
 
     <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-3">
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-forum-bot.jpg" alt="Telegram-бот учёта расходов форума — демо" loading="lazy" width="1200" height="750">
         <div class="tag-soon">живое демо</div>
-        <span>Telegram-бот — расходы форума</span>
       </div>
       <div class="work-body">
         <h3>Бот учёта расходов форума</h3>
@@ -488,17 +585,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
       </div>
     </div>
 
-    <div class="work-card reveal" data-tilt>
-      <div class="work-media wm-1" style="background:none;">
-        <div class="tag-soon">в процессе</div>
-        <span>Новая работа — скоро здесь</span>
-      </div>
-      <div class="work-body">
-        <h3>Ещё один проект в разработке</h3>
-        <p>Таких уроков и проектов — десятки. Здесь появится следующая работа.</p>
-        <div class="tag-row"><span>Coming soon</span></div>
-      </div>
-    </div>
+    <!-- НОВАЯ РАБОТА: скопируй любую карточку выше, положи скриншот в img/ и поменяй текст и ссылки -->
 
   </div>
 </section>
@@ -512,8 +599,19 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
 
   <div class="case-list">
 
+    <article class="case-card reveal" id="case-platform">
+      <div class="case-head"><span class="case-num">01</span><h3>Учебная платформа Alfa Z — от схемы базы данных до кабинета ученика</h3></div>
+      <div class="case-block"><span class="case-label problem">Проблема</span>
+        <p>Школе нужна была не витрина с видеоуроками, а система контроля обучения. Потоков нет: каждый ученик стартует в свой день и идёт по личному графику, а значит, никто не заметит, что ребёнок «встал», если система сама не считает отставание. Готовые LMS этого не умеют, а ещё не знают про куратора, оплату по абонементу и родителя, которому нужно написать в WhatsApp.</p></div>
+      <div class="case-block"><span class="case-label solution">Решение</span>
+        <p>Спроектировала и реализовала платформу с нуля как full-stack продукт: Next.js 15 + TypeScript, PostgreSQL + Prisma, Auth.js, фоновые задачи на pg-boss, письма через Resend, Web Push и WhatsApp-уведомления, Sentry, деплой в Docker через GitHub Actions на VPS. Внутри — четыре роли с матрицей доступа, график открытия уроков от даты старта с паузами и заморозками, автоматический расчёт отставания и лестница эскалации для куратора, баллы, стрики и месячный лидерборд, тесты с банком вопросов и безопасным пересчётом, учёт оплат с блокировкой доступа, сертификаты, редактор уроков на CodeMirror с sandbox-рендером и 43 мини-игры внутри уроков. Курсы существуют параллельно на русском и казахском.</p></div>
+      <div class="case-block"><span class="case-label result">Результат</span>
+        <p>Платформа развёрнута в продакшене на platformalfa-z.kz: вход по приглашению, интерфейс RU / KZ, тёмная тема, PWA с push-уведомлениями. Куратор видит риск-флаги по отставанию, родитель получает отчёт и предупреждения об оплате в WhatsApp, админ — аудит всех действий. Весь путь от ТЗ до релиза пройден одним человеком с ИИ-агентами: 130+ коммитов и 113 файлов тестов за месяц.</p></div>
+      <div class="tag-row"><span>Next.js / TypeScript</span><span>PostgreSQL / Prisma</span><span>Docker + GitHub Actions</span><span>AI-assisted dev</span></div>
+    </article>
+
     <article class="case-card reveal" id="case-1">
-      <div class="case-head"><span class="case-num">01</span><h3>Сайт школы Alfa-Z — нестандартный дизайн вместо шаблона конкурентов</h3></div>
+      <div class="case-head"><span class="case-num">02</span><h3>Сайт школы Alfa-Z — нестандартный дизайн вместо шаблона конкурентов</h3></div>
       <div class="case-block"><span class="case-label problem">Проблема</span>
         <p>Изучила сайты конкурирующих IT-школ и заметила, что почти все используют одну и ту же визуальную формулу: зелёный, фиолетовый, неоновый, синий, чёрный. Сайты выглядят взаимозаменяемо, перегружены «водой» и часто плохо работают на мобильных устройствах.</p></div>
       <div class="case-block"><span class="case-label solution">Решение</span>
@@ -524,7 +622,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </article>
 
     <article class="case-card reveal" id="case-2">
-      <div class="case-head"><span class="case-num">02</span><h3>Конструктор пробного урока — персонализация вместо скучного Zoom-занятия</h3></div>
+      <div class="case-head"><span class="case-num">03</span><h3>Конструктор пробного урока — персонализация вместо скучного Zoom-занятия</h3></div>
       <div class="case-block"><span class="case-label problem">Проблема</span>
         <p>Стандартный формат пробного урока — час в Zoom, где ребёнок просто повторяет действия за преподавателем. Формат скучный и плохо продаёт курс: родитель не видит наглядного результата, ребёнок не вовлечён.</p></div>
       <div class="case-block"><span class="case-label solution">Решение</span>
@@ -535,7 +633,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </article>
 
     <article class="case-card reveal" id="case-3">
-      <div class="case-head"><span class="case-num">03</span><h3>Формат интерактивных уроков — вовлечение и запоминание через симуляторы</h3></div>
+      <div class="case-head"><span class="case-num">04</span><h3>Формат интерактивных уроков — вовлечение и запоминание через симуляторы</h3></div>
       <div class="case-block"><span class="case-label problem">Проблема</span>
         <p>Типичный курс — видеоурок плюс сплошной текст плюс непонятное домашнее задание. Ученики застревают на домашних заданиях и часто вовсе перестают посещать занятия.</p></div>
       <div class="case-block"><span class="case-label solution">Решение</span>
@@ -547,8 +645,8 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
 
   </div>
 
-  <!-- ПРАВЬ ЗДЕСЬ: замени на реальную цитату от Alfa-Z / ученика / родителя, когда появится -->
-  <div class="testimonial reveal">
+  <!-- ОТЗЫВ: блок скрыт, пока нет реальной цитаты. Чтобы показать — удали атрибут hidden и впиши текст. -->
+  <div class="testimonial reveal" hidden>
     <span class="testimonial-badge">заполни, когда будет отзыв</span>
     <div class="testimonial-mark">“</div>
     <p class="testimonial-quote">Здесь будет короткая цитата от того, кто пользовался результатом — например, от команды Alfa-Z, ученика или родителя. Пара предложений о том, что это правда сработало.</p>
@@ -576,12 +674,18 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
     </div>
     <div class="service-card reveal">
       <div class="service-num">02</div>
+      <h3>Веб-платформа и личный кабинет</h3>
+      <p>Полноценный продукт с ролями, базой данных, оплатами и уведомлениями — как Alfa Z. От схемы БД и авторизации до деплоя на ваш сервер.</p>
+      <div class="service-price">Цена — индивидуально, после короткого созвона</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
       <h3>Интерактивные уроки и геймификация</h3>
       <p>Структура урока, логика заданий, квизы, мини-игры и прогресс — превращаю скучную теорию в то, что хочется пройти до конца.</p>
       <div class="service-price">Цена — индивидуально, после короткого созвона</div>
     </div>
     <div class="service-card reveal">
-      <div class="service-num">03</div>
+      <div class="service-num">04</div>
       <h3>AI-assisted development</h3>
       <p>Ускоряю разработку с помощью ИИ-инструментов, сохраняя полный контроль над качеством: от идеи до готового кликабельного продукта.</p>
       <div class="service-price">Цена — индивидуально, после короткого созвона</div>
@@ -695,6 +799,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 // ---------- typewriter tagline ----------
 const phrases=[
   'Делаю сайты, которые запоминаются, а не теряются.',
+  'Собираю учебные платформы: от базы данных до кабинета ученика.',
   'Проектирую уроки, которые проходят до конца.',
   'Пишу код руками и ускоряю разработку через AI-assisted development.'
 ];
