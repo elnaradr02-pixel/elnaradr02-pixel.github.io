@@ -37,7 +37,7 @@ body{
 h1,h2,h3,.brand,.logo-mark{font-family:'Bricolage Grotesque',sans-serif;}
 ::selection{background:var(--rose);color:#fff;}
 a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
+img{max-width:100%;display:block;height:auto;}
 button{font-family:inherit;cursor:none;}
 ul{list-style:none;}
 
@@ -220,9 +220,9 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 
 /* ---------- скриншоты в карточках работ ---------- */
 .work-media.wm-shot{padding:0;}
-.work-media.wm-shot::before{background:linear-gradient(180deg,rgba(204,122,140,.06),rgba(43,33,48,.22));opacity:1;z-index:2;}
+.work-media.wm-shot::before{display:none;} /* без тонирования: скриншот должен быть чётким */
 .work-media.wm-shot::after{display:none;}
-.work-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:1;transform:scale(1.01);transition:transform .8s cubic-bezier(.2,.8,.2,1);}
+.work-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:1;transition:transform .8s cubic-bezier(.2,.8,.2,1);}
 .work-card:hover .work-shot{transform:scale(1.05);}
 
 /* ---------- главный проект: учебная платформа ---------- */
@@ -230,12 +230,12 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 .feat-media{position:relative;min-height:440px;overflow:hidden;background:radial-gradient(120% 90% at 0% 0%,#3d2f52 0%,#20182A 55%,#0F0F1A 100%);}
 .feat-media::before{content:'';position:absolute;width:60%;height:60%;border-radius:50%;background:rgba(255,107,71,.38);filter:blur(70px);top:-10%;right:-10%;animation:floatSoft 14s ease-in-out infinite;}
 .feat-win{position:absolute;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 30px 60px rgba(0,0,0,.45);}
-.feat-win img{display:block;width:100%;height:calc(100% - 22px);object-fit:cover;object-position:top center;}
+.feat-win img{display:block;width:100%;height:auto;} /* окно принимает пропорции скриншота целиком */
 .feat-win-bar{height:22px;background:#f3ede6;display:flex;align-items:center;gap:5px;padding:0 10px;border-bottom:1px solid rgba(0,0,0,.06);}
 .feat-win-bar i{width:7px;height:7px;border-radius:50%;}
 .feat-win-bar i:nth-child(1){background:#ff5f57;}.feat-win-bar i:nth-child(2){background:#febc2e;}.feat-win-bar i:nth-child(3){background:#28c840;}
-.feat-win-main{left:6%;top:10%;width:74%;aspect-ratio:16/10;}
-.feat-win-lesson{right:-4%;bottom:-6%;width:58%;aspect-ratio:16/10;transform:rotate(-3deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.feat-win-main{left:6%;top:9%;width:76%;}
+.feat-win-lesson{right:-4%;bottom:-5%;width:56%;transform:rotate(-3deg);transition:transform .6s cubic-bezier(.2,.8,.2,1);}
 .work-featured:hover .feat-win-lesson{transform:rotate(-1deg) translateY(-8px);}
 .feat-badge{position:absolute;top:18px;left:18px;z-index:3;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:100px;font-size:.72rem;font-weight:700;backdrop-filter:blur(6px);display:inline-flex;align-items:center;gap:9px;}
 .feat-badge .heart-css{--hs:8px;--hc:#FF6B47;}
@@ -250,7 +250,7 @@ section{position:relative;z-index:2;padding:130px 6vw;max-width:1280px;margin:0 
 @media (max-width:1100px){.feat-stats{grid-template-columns:repeat(2,1fr);}}
 @media (max-width:920px){
   .work-featured{grid-template-columns:1fr;}
-  .feat-media{min-height:0;aspect-ratio:16/11;}
+  .feat-media{min-height:0;aspect-ratio:16/11.5;}
   .feat-body{padding:28px 26px 30px;}
   .feat-stats{grid-template-columns:repeat(4,1fr);}
 }
@@ -331,7 +331,7 @@ footer{padding:50px 6vw 70px;text-align:center;position:relative;z-index:2;}
   .contact-card{padding:56px 6vw;border-radius:26px;}
   .hero-cta{flex-direction:column;align-items:stretch;}
   .hero-cta .btn{justify-content:center;text-align:center;}
-  .work-media{aspect-ratio:4/3;}
+  .work-media{aspect-ratio:16/10;} /* альбомная, как сам скриншот: ничего не обрезается */
 }
 @media (max-width:480px){
   header{padding:16px 5vw;}

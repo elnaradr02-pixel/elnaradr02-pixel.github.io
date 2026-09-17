@@ -37,7 +37,7 @@
 
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px;}
 .shot{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;}
-.shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center;}
+.shot img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;object-position:top center;background:#0F0F1A;} /* height:auto обязателен: иначе атрибут height задаёт высоту в px */
 .shot figcaption{padding:12px 16px;font-size:.82rem;font-weight:600;color:var(--ink-soft);}
 .shots-note{margin-top:16px;font-size:.85rem;color:var(--ink-softer);}
 
@@ -181,11 +181,14 @@
 <section id="shots" style="padding-top:40px;">
   <div class="blob-soft" style="width:240px;height:240px;background:var(--blush);top:0;right:-60px;"></div>
   <div class="shots">
-    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-login.jpg" alt="Вход в платформу Alfa Z" loading="lazy" width="1200" height="750"><figcaption>Вход: email или телефон, RU / KK, тёмная тема</figcaption></figure>
-    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson.jpg" alt="Урок по SQL внутри платформы" loading="lazy" width="1200" height="750"><figcaption>Урок бэкенд-курса: SQL, живые блоки, самопроверка</figcaption></figure>
-    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson-2.jpg" alt="Урок курса CS50 внутри платформы" loading="lazy" width="1200" height="750"><figcaption>Урок курса CS50: своя палитра и форма у каждого урока</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-courses.jpg" srcset="img/platform-courses-sm.jpg 900w, img/platform-courses.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Кабинет администратора: конструктор курсов" loading="lazy" width="1800" height="1012"><figcaption>Админ · конструктор курсов: этапы, уроки, публикация, RU и KZ-версии курсов</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-certificates.jpg" srcset="img/platform-certificates-sm.jpg 900w, img/platform-certificates.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Кабинет администратора: сертификаты" loading="lazy" width="1800" height="1012"><figcaption>Админ · сертификаты с публичной страницей проверки и отзывом</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-login.jpg" srcset="img/platform-login-sm.jpg 900w, img/platform-login.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Вход в платформу Alfa Z" loading="lazy" width="1800" height="1125"><figcaption>Вход: email или телефон, RU / KK, светлая и тёмная тема</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson.jpg" srcset="img/platform-lesson-sm.jpg 900w, img/platform-lesson.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Урок по SQL внутри платформы" loading="lazy" width="1800" height="1125"><figcaption>Урок бэкенд-курса: SQL, живые блоки, самопроверка</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson-2.jpg" srcset="img/platform-lesson-2-sm.jpg 900w, img/platform-lesson-2.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Урок курса CS50 внутри платформы" loading="lazy" width="1800" height="1125"><figcaption>Урок курса CS50: своя палитра и форма у каждого урока</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/demo-alfa-z-editor.jpg" srcset="img/demo-alfa-z-editor-sm.jpg 900w, img/demo-alfa-z-editor.jpg 1800w" sizes="(max-width:640px) 92vw, (max-width:920px) 46vw, 400px" alt="Пробный урок Alfa Z — отдельное веб-приложение" loading="lazy" width="1800" height="1125"><figcaption>Пробный урок: отдельное веб-приложение экосистемы школы</figcaption></figure>
   </div>
-  <p class="shots-note reveal">Кабинеты ученика, куратора и админа — за авторизацией: показываю их на созвоне.</p>
+  <p class="shots-note reveal">Кабинеты ученика и куратора — за авторизацией: показываю их на созвоне.</p>
 </section>
 
 <!-- ================= ЗАДАЧА ================= -->
