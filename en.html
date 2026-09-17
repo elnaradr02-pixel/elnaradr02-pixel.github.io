@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elnara Rustamkyzy — portfolio</title>
+<meta name="description" content="Elnara Rustamkyzy — portfolio: the Alfa Z learning platform (Next.js + PostgreSQL), websites, interactive lessons and Telegram bots. Hand-written code, accelerated with AI-assisted development.">
+<meta name="theme-color" content="#FDF6F0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://elnaradr02-pixel.github.io/en.html">
+<link rel="alternate" hreflang="ru" href="https://elnaradr02-pixel.github.io/">
+<link rel="alternate" hreflang="en" href="https://elnaradr02-pixel.github.io/en.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://elnaradr02-pixel.github.io/en.html">
+<meta property="og:title" content="Elnara Rustamkyzy — portfolio">
+<meta property="og:description" content="The Alfa Z learning platform, websites, interactive lessons and bots. Hand-written code + AI-assisted development.">
+<meta property="og:image" content="https://elnaradr02-pixel.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Elnara Rustamkyzy — portfolio">
+<meta name="twitter:description" content="The Alfa Z learning platform, websites, interactive lessons and bots.">
+<meta name="twitter:image" content="https://elnaradr02-pixel.github.io/og.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Elnara Rustamkyzy","url":"https://elnaradr02-pixel.github.io/en.html","image":"https://elnaradr02-pixel.github.io/elnara-photo.jpg","jobTitle":"Web developer: learning platforms, websites, interactive lessons","email":"mailto:elnara.d.r02@gmail.com","sameAs":["https://github.com/elnaradr02-pixel","https://t.me/elleaa717"],"knowsAbout":["Next.js","TypeScript","PostgreSQL","HTML/CSS/JS","AI-assisted development","Interactive lessons","Gamification"]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="preloader">
+  <div class="loader-mark">ER</div>
+  <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+</div>
+
+<div class="bg-blobs"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<header id="siteHeader">
+  <a href="#hero" class="logo-mark">ER<span class="heart-css" style="--hs:9px"></span></a>
+  <nav class="desktop-nav">
+    <a href="#about">About</a>
+    <a href="#works">Work</a>
+    <a href="#cases">Cases</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="index.html" class="nav-lang" lang="ru" hreflang="ru">RU</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Menu">
+    <span class="heart-css burger-heart"></span>
+    <span class="burger-x x1"></span>
+    <span class="burger-x x2"></span>
+  </button>
+</header>
+
+<div id="mobileMenu" role="dialog" aria-label="Site menu">
+  <button class="menu-close" id="menuClose" aria-label="Close menu"><span></span><span></span></button>
+  <a href="#about"><span class="heart-css" style="--hs:8px"></span>About</a>
+  <a href="#works"><span class="heart-css" style="--hs:8px"></span>Work</a>
+  <a href="#cases"><span class="heart-css" style="--hs:8px"></span>Cases</a>
+  <a href="#services"><span class="heart-css" style="--hs:8px"></span>Services</a>
+  <a href="#contact"><span class="heart-css" style="--hs:8px"></span>Contact</a>
+  <a href="index.html" class="nav-lang" lang="ru" hreflang="ru">RU · Русская версия</a>
+  <div class="menu-close-hint">press ✕ or Esc to close</div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow reveal">Hi, I am</div>
+      <h1 class="hero-name reveal">Elnara<br><span class="accent">Rustamkyzy</span></h1>
+      <p class="hero-tagline reveal" id="typewriter" data-phrases='["I build websites people remember, not scroll past.","I build learning platforms: from the database to the student dashboard.","I design lessons that students actually finish.","Hand-written code, accelerated with AI-assisted development."]'>&nbsp;</p>
+      <div class="hero-cta reveal">
+        <a href="#works" class="btn btn-primary">See my work</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap reveal">
+      <div class="hero-photo-glow"></div>
+      <div class="hero-photo-ring"></div>
+      <img class="hero-photo" src="elnara-photo.jpg" alt="Elnara Rustamkyzy">
+      <div class="hero-photo-tint"></div>
+      <span class="hero-photo-heart"><span class="heart-css" style="--hs:16px;--hc:var(--rose-deep);"></span></span>
+    </div>
+  </div>
+  <div class="scroll-cue"><div class="line"></div>scroll</div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="blob-soft" style="width:260px;height:260px;background:var(--blush);top:-40px;right:-60px;"></div>
+  <div class="blob-soft" style="width:200px;height:200px;background:var(--sand);bottom:20px;left:-70px;animation-delay:-6s;"></div>
+  <div class="eyebrow reveal">About</div>
+  <h2 class="section-title reveal">A bit about <em>me</em></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I build websites and digital products that do not look like a template. I value interfaces with character: animation that serves the impression rather than animation for its own sake.</p>
+      <p>My latest big project is the <a href="#work-platform" class="about-link">Alfa Z</a> learning platform: a full-stack product on Next.js and PostgreSQL with dashboards for students, teachers, curators and admins, personal schedules, points, payments and parent notifications.</p>
+      <p>I also design interactive lessons: with games, quizzes, embedded code editors and logic that walks the student step by step instead of showing text on a slide.</p>
+      <p>I write code by hand and use AI-assisted development where it speeds things up, without losing quality or attention to detail.</p>
+    </div>
+    <div class="reveal">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">learning platform in production, full-stack, from scratch</div></div>
+        <div class="stat-card"><div class="stat-num">3+</div><div class="stat-label">websites and landing pages shipped</div></div>
+        <div class="stat-card"><div class="stat-num">80+</div><div class="stat-label">interactive lessons designed</div></div>
+        <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">education brands · RU / KZ</div></div>
+      </div>
+      <div class="skill-chips">
+        <span class="chip">Next.js / TypeScript</span>
+        <span class="chip">PostgreSQL / Prisma</span>
+        <span class="chip">HTML / CSS / JS</span>
+        <span class="chip">Docker / CI-CD</span>
+        <span class="chip">Telegram bots</span>
+        <span class="chip">AI-assisted development</span>
+        <span class="chip">Interactive lessons</span>
+        <span class="chip">UI animation</span>
+        <span class="chip">Gamification</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK ================= -->
+<section id="works">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--sand);top:5%;right:-70px;animation-delay:-4s;"></div>
+  <div class="blob-soft" style="width:200px;height:200px;background:var(--blush);bottom:5%;left:-60px;animation-delay:-11s;"></div>
+  <div class="eyebrow reveal">Selected work</div>
+  <h2 class="section-title reveal">What I <em>build</em></h2>
+
+  <div class="work-grid">
+
+    <article class="work-card work-featured reveal" id="work-platform">
+      <div class="feat-media">
+        <div class="feat-badge"><span class="heart-css"></span>flagship project · 2026</div>
+        <div class="feat-win feat-win-main">
+          <div class="feat-win-bar"><i></i><i></i><i></i></div>
+          <img src="img/platform-login.jpg" alt="Alfa Z — learning platform sign-in" loading="lazy" width="1200" height="750">
+        </div>
+        <div class="feat-win feat-win-lesson">
+          <div class="feat-win-bar"><i></i><i></i><i></i></div>
+          <img src="img/platform-lesson.jpg" alt="Alfa Z — an interactive lesson inside the platform" loading="lazy" width="1200" height="750">
+        </div>
+      </div>
+      <div class="feat-body">
+        <div class="feat-kicker">Learning platform · live and in use</div>
+        <h3>Alfa Z Platform — a learning platform with progress control</h3>
+        <p>A full-stack product designed and built from scratch: dashboards for students, teachers, curators and admins, a personal schedule from each student's start date, homework and quizzes, points and a leaderboard, payment tracking, certificates, WhatsApp notifications for parents. RU / KZ interface, dark theme, PWA.</p>
+        <div class="feat-stats">
+          <div class="feat-stat"><b>4</b><span>roles and an access matrix</span></div>
+          <div class="feat-stat"><b>89</b><span>database tables</span></div>
+          <div class="feat-stat"><b>78k</b><span>lines of TypeScript</span></div>
+          <div class="feat-stat"><b>113</b><span>test files</span></div>
+        </div>
+        <div class="tag-row"><span>Next.js 15</span><span>TypeScript</span><span>PostgreSQL / Prisma</span><span>Auth.js</span><span>Docker + CI/CD</span><span>AI-assisted dev</span></div>
+        <div class="work-links">
+          <a class="work-link" href="https://platformalfa-z.kz/" target="_blank" rel="noopener">Open the platform ↗</a>
+          <a class="work-link work-link--case" href="alfa-z-platform.html" hreflang="ru">Full case study (in Russian) →</a>
+          <a class="work-link work-link--case" href="#case-platform">Case ↓</a>
+        </div>
+      </div>
+    </article>
+
+    <div class="work-card reveal" data-tilt>
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/alfa-z-site.jpg" alt="alfa-z.kz — programming school website" loading="lazy" width="1200" height="750">
+        <div class="tag-soon">live</div>
+      </div>
+      <div class="work-body">
+        <h3>Alfa Z — programming school website</h3>
+        <p>A landing page with a palette no competitor uses, three languages (KZ / RU / EN), fully responsive.</p>
+        <div class="tag-row"><span>Landing page</span><span>AI-assisted dev</span><span>Production</span></div>
+        <div class="work-links">
+          <a class="work-link" href="https://alfa-z.kz/" target="_blank" rel="noopener">Open the site ↗</a>
+          <a class="work-link work-link--case" href="#case-1">Case ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-tilt>
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-alfa-z-editor.jpg" alt="Alfa Z — trial lesson web app, first screen" loading="lazy" width="1200" height="750">
+        <div class="tag-soon">live</div>
+      </div>
+      <div class="work-body">
+        <h3>Alfa Z — the trial lesson as a web app</h3>
+        <p>Four steps in 60 minutes: meet, take a track quiz, build your first IT project in the editor and get a result to share. RU / KZ, light and dark themes, a mentor sign-in.</p>
+        <div class="tag-row"><span>Web app</span><span>Gamification</span><span>RU / KZ</span></div>
+        <div class="work-links">
+          <a class="work-link" href="https://alfa-z-trial-lesson.vercel.app/" target="_blank" rel="noopener">Open the trial lesson ↗</a>
+          <a class="work-link work-link--case" href="#case-2">Case ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-tilt>
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-cap-editor.jpg" alt="Cap Education — the student site builder" loading="lazy" width="1200" height="750">
+        <div class="tag-soon">live demo</div>
+      </div>
+      <div class="work-body">
+        <h3>Cap Education — a next-generation trial lesson</h3>
+        <p>The same trial-lesson mechanic for another education brand: its own script and page builder.</p>
+        <div class="tag-row"><span>Interactive</span><span>UX for learning</span><span>RU / KZ</span></div>
+        <div class="work-links">
+          <a class="work-link" href="demos/Редактор-сайта_УЧЕНИК.html" target="_blank" rel="noopener">Open demo (RU) ↗</a>
+          <a class="work-link work-link--case" href="#case-2">Case ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-tilt>
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-cap-lesson2.jpg" alt="Cap Education — lesson 2, Vibe-coding: bringing a bot to life with AI" loading="lazy" width="1200" height="750">
+        <div class="tag-soon">live demo</div>
+      </div>
+      <div class="work-body">
+        <h3>Lesson “Vibe-coding: bringing a bot to life with AI”</h3>
+        <p>A prompt builder with a live indicator, a Telegram bot emulator, an AI bug hunt, flashcards, a quiz and homework with a cheat sheet. One of dozens of lessons in the course.</p>
+        <div class="tag-row"><span>Interactive lesson</span><span>AI-assisted dev</span><span>Gamification</span></div>
+        <div class="work-links">
+          <a class="work-link" href="demos/cap-education-lesson-2-backend.html" target="_blank" rel="noopener">Open demo (RU) ↗</a>
+          <a class="work-link work-link--case" href="#case-3">Case ↓</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="work-card reveal" data-tilt>
+      <div class="work-media wm-shot">
+        <img class="work-shot" src="img/demo-forum-bot.jpg" alt="Forum expense-tracking Telegram bot — demo" loading="lazy" width="1200" height="750">
+        <div class="tag-soon">live demo</div>
+      </div>
+      <div class="work-body">
+        <h3>Forum expense-tracking bot</h3>
+        <p>One message, one expense logged: it parses the amount and category, keeps the budget and syncs everything to a Google Sheet. Built in 6 hours, runs 24/7 on its own server.</p>
+        <div class="tag-row"><span>Telegram Bot</span><span>Google Sheets</span><span>AI-assisted dev</span></div>
+        <div class="work-links">
+          <a class="work-link" href="demos/forum-budget-bot.html" target="_blank" rel="noopener">Open demo (RU) ↗</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= CASES ================= -->
+<section id="cases">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--blush);top:-20px;right:6%;animation-delay:-5s;"></div>
+  <div class="blob-soft" style="width:200px;height:200px;background:var(--sand);bottom:10%;left:-60px;animation-delay:-10s;"></div>
+  <div class="eyebrow reveal">Case studies</div>
+  <h2 class="section-title reveal">How I <em>solve</em> problems</h2>
+
+  <div class="case-list">
+
+    <article class="case-card reveal" id="case-platform">
+      <div class="case-head"><span class="case-num">01</span><h3>Alfa Z learning platform — from the database schema to the student dashboard</h3></div>
+      <div class="case-block"><span class="case-label problem">Problem</span>
+        <p>The school needed a system that controls learning, not a shelf of video lessons. There are no cohorts: every student starts on their own day and follows a personal schedule, so nobody notices a child has stalled unless the system computes the lag itself. Off-the-shelf LMSs cannot do that, and they know nothing about curators, lesson-based subscriptions or a parent who needs a WhatsApp message.</p></div>
+      <div class="case-block"><span class="case-label solution">Solution</span>
+        <p>Designed and built the platform from scratch as a full-stack product: Next.js 15 + TypeScript, PostgreSQL + Prisma, Auth.js, background jobs on pg-boss, email via Resend, Web Push and WhatsApp notifications, Sentry, Docker deploys via GitHub Actions to a VPS. Inside: four roles with an access matrix, a lesson unlock schedule from the start date with pauses and freezes, automatic lag calculation and an escalation ladder for curators, points, streaks and a monthly leaderboard, quizzes with a question bank and safe regrading, payment tracking with access blocking, certificates, a CodeMirror lesson editor with sandboxed rendering and 43 mini-games inside lessons. Courses exist in parallel in Russian and Kazakh.</p></div>
+      <div class="case-block"><span class="case-label result">Result</span>
+        <p>The platform is live at platformalfa-z.kz and already in use by the school: students take lessons, submit homework and earn points, and the founder has signed off on the result. Invite-only access, RU / KZ interface, dark theme, PWA with push notifications. Curators see lag-based risk flags, parents get reports and payment reminders in WhatsApp, admins get a full audit log. The whole path from spec to release was walked by one person with AI agents: 130+ commits and 113 test files in a month.</p></div>
+      <div class="tag-row"><span>Next.js / TypeScript</span><span>PostgreSQL / Prisma</span><span>Docker + GitHub Actions</span><span>AI-assisted dev</span></div>
+      <div class="work-links" style="margin-top:18px;"><a class="work-link" href="alfa-z-platform.html" hreflang="ru">Read the full case study: architecture, roles, what was hard (in Russian) →</a></div>
+    </article>
+
+    <article class="case-card reveal" id="case-1">
+      <div class="case-head"><span class="case-num">02</span><h3>Alfa-Z school website — a distinctive design instead of the competitors' template</h3></div>
+      <div class="case-block"><span class="case-label problem">Problem</span>
+        <p>I studied competing IT schools' websites and noticed they all share one visual formula: green, purple, neon, blue, black. The sites look interchangeable, are padded with filler text and often work poorly on mobile.</p></div>
+      <div class="case-block"><span class="case-label solution">Solution</span>
+        <p>Designed and built a site with an unusual palette (midnight, coral, cream) I had not seen at any competitor. Cut the filler: only concrete information about what kids do on the courses, with work samples on the first screen. Tested on mobile and desktop with no jank.</p></div>
+      <div class="case-block"><span class="case-label result">Result</span>
+        <p>Launched July 16, 2026, published on GitHub, stable on every device. A parent understands within seconds what their child will be doing, without calling a manager.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>GitHub</span><span>AI agents for layout and content</span></div>
+    </article>
+
+    <article class="case-card reveal" id="case-2">
+      <div class="case-head"><span class="case-num">03</span><h3>Trial-lesson builder — personalisation instead of a boring Zoom class</h3></div>
+      <div class="case-block"><span class="case-label problem">Problem</span>
+        <p>The standard trial lesson is an hour on Zoom where the child just repeats after the teacher. It is dull and sells the course poorly: the parent sees no tangible result, the child is not engaged.</p></div>
+      <div class="case-block"><span class="case-label solution">Solution</span>
+        <p>Built an HTML page with an embedded site builder. The child enters their name, age, interests and dream profession, uploads a photo of family, a pet or a favourite place, picks a structure and a theme, and walks away with their own mini portfolio site. The page also holds interactive samples of each of the school's five tracks (a Unity mini-game, a Caesar cipher demo for the algorithms course) so the child feels what the course is about, plus a five-question quiz that suggests the right track.</p></div>
+      <div class="case-block"><span class="case-label result">Result</span>
+        <p>The finished site becomes something to show off to the family, which does most of the sales team's job before a manager ever calls. The trial lesson has grown into a standalone web app (alfa-z-trial-lesson.vercel.app): four steps, RU / KZ, dark theme, a mentor sign-in.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>Product design</span><span>User journey</span></div>
+    </article>
+
+    <article class="case-card reveal" id="case-3">
+      <div class="case-head"><span class="case-num">04</span><h3>Interactive lesson format — engagement and retention through simulators</h3></div>
+      <div class="case-block"><span class="case-label problem">Problem</span>
+        <p>A typical course is a video, a wall of text and a confusing homework task. Students get stuck on homework and often stop showing up.</p></div>
+      <div class="case-block"><span class="case-label solution">Solution</span>
+        <p>Designed and built a new lesson format in HTML/CSS/JS with animations (“Blue Reflect”), where the colour scheme changes per lesson. Under each topic there is a live simulator matching the material: for the Telegram bot lesson, a working bot simulator you can poke before writing any code. Homework comes in two levels (hard, and an easier fallback), each with a hidden cheat sheet so one tough task does not make a student quit. Every lesson ends with a 7–8 question quiz with explanations and flip-to-reveal memory cards.</p></div>
+      <div class="case-block"><span class="case-label result">Result</span>
+        <p>The format reduces drop-off on hard topics and speeds up retention through hands-on practice and repetition via cards and quizzes.</p></div>
+      <div class="tag-row"><span>AI-assisted dev</span><span>Learning methodology</span><span>Gamification</span></div>
+    </article>
+
+  </div>
+
+  <div class="testimonial testimonial--plain reveal">
+    <span class="testimonial-badge">client feedback</span>
+    <p class="testimonial-quote">The Alfa Z platform is already in use: the school runs its teaching on it, students take lessons, submit homework and earn points. The school's founder accepted the result and praised the work.</p>
+    <div class="testimonial-author">Alfa Z programming school — after launch, September 2026</div>
+  </div>
+
+  <div class="case-conclusion reveal">
+    <p><b>What all the cases share:</b> find the point where the user (a parent or a student) loses interest or gets stuck, and close it with an interactive solution designed and built with AI tools and AI agents, without a classic development team.</p>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="blob-soft" style="width:250px;height:250px;background:var(--terracotta);opacity:.3;top:-30px;left:8%;animation-delay:-2s;"></div>
+  <div class="blob-soft" style="width:220px;height:220px;background:var(--blush);bottom:-40px;right:6%;animation-delay:-8s;"></div>
+  <div class="eyebrow reveal">I can help with</div>
+  <h2 class="section-title reveal">How I am <em>useful</em></h2>
+  <div class="service-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <h3>Website or landing page, end to end</h3>
+      <p>Design, code, animation and launch: from an idea to a working link you can send to clients today.</p>
+      <ul class="service-list"><li>Design and code, no templates</li><li>Mobile-first, animations, performance</li><li>Launch: domain, hosting, social previews</li></ul>
+      <div class="service-price">Pricing and timeline after a short call</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <h3>Web platform or member area</h3>
+      <p>A full product with roles, a database, payments and notifications, like Alfa Z. From the DB schema and auth to deployment on your server.</p>
+      <ul class="service-list"><li>Roles, auth, database</li><li>Payments, notifications, reports</li><li>Deploy to your server, backups, error monitoring</li></ul>
+      <div class="service-price">Pricing and timeline after a short call</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <h3>Interactive lessons and gamification</h3>
+      <p>Lesson structure, task logic, quizzes, mini-games and progress: I turn dull theory into something people finish.</p>
+      <ul class="service-list"><li>Lesson script and topic-specific simulators</li><li>Quizzes, flashcards, two-level homework with cheat sheets</li><li>Points, streaks, leaderboards</li></ul>
+      <div class="service-price">Pricing and timeline after a short call</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <h3>AI-assisted development</h3>
+      <p>I speed up development with AI tools while keeping full control of quality: from idea to a clickable product.</p>
+      <ul class="service-list"><li>Fast prototypes to test an idea</li><li>Speeding up an existing team or product</li><li>Tests, documentation, quality control</li></ul>
+      <div class="service-price">Pricing and timeline after a short call</div>
+    </div>
+  </div>
+  <div class="service-note reveal">
+    Tell me a few words about the task and I will reply with a rough estimate of timeline and cost.<br>
+    <a href="https://t.me/elleaa717?text=Hi%20Elnara%21%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%3A%20" class="btn btn-primary" target="_blank" rel="noopener">Discuss a project on Telegram ✈</a>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="contact-card">
+    <div class="blob-soft" style="width:280px;height:280px;background:var(--rose);opacity:.28;top:-70px;left:-60px;"></div>
+    <div class="blob-soft" style="width:220px;height:220px;background:var(--terracotta);opacity:.22;bottom:-50px;right:-40px;animation-delay:-7s;"></div>
+    <div class="eyebrow reveal" style="justify-content:center;">Get in touch</div>
+    <h2 class="section-title reveal">Got an idea? <em>Write to me.</em></h2>
+    <p class="reveal" style="color:rgba(253,246,240,.65);max-width:520px;margin:0 auto;">Telegram is where I reply fastest. Write about a project, a collaboration, or just to say hi. English is fine.</p>
+    <div class="contact-links reveal">
+      <a href="https://t.me/elleaa717?text=Hi%20Elnara%21%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%3A%20" target="_blank" rel="noopener" style="background:var(--rose);border-color:var(--rose);">✈ Message me on Telegram: @elleaa717</a>
+      <a href="mailto:elnara.d.r02@gmail.com">✉ elnara.d.r02@gmail.com</a>
+      <a href="https://github.com/elnaradr02-pixel" target="_blank" rel="noopener">⌥ GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="signature" id="signature"><span class="dot"></span>This site was made by me, by hand and with love — Elnara, 2026</div>
+  <div class="footer-note">click the signature ↑</div>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

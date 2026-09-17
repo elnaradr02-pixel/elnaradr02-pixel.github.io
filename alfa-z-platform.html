@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfa Z Platform — кейс: учебная платформа с контролем обучения</title>
+<meta name="description" content="Подробный разбор учебной платформы Alfa Z: задача, архитектура на Next.js и PostgreSQL, роли, что внутри, что было сложно и как это делалось одним человеком с ИИ-агентами.">
+<meta name="theme-color" content="#FDF6F0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://elnaradr02-pixel.github.io/alfa-z-platform.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://elnaradr02-pixel.github.io/alfa-z-platform.html">
+<meta property="og:title" content="Alfa Z Platform — кейс Эльнары Рустамкызы">
+<meta property="og:description" content="Учебная платформа без потоков: личный график каждого ученика, ДЗ и тесты, баллы, оплаты, WhatsApp родителям. Next.js + PostgreSQL, с нуля до запуска.">
+<meta property="og:image" content="https://elnaradr02-pixel.github.io/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ---------- страница кейса ---------- */
+.case-hero{min-height:0;padding-top:150px;padding-bottom:60px;}
+.case-kicker{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--rose);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.case-kicker::before{content:'';width:26px;height:2px;background:var(--rose);}
+.case-title{font-size:clamp(2.2rem,5.5vw,4.2rem);font-weight:800;letter-spacing:-1.5px;line-height:1.05;max-width:900px;}
+.case-title em{font-style:normal;color:var(--rose);}
+.case-lede{margin-top:22px;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--ink-soft);line-height:1.65;max-width:720px;}
+.kpi-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;}
+.kpi{background:var(--card);box-shadow:var(--shadow-sm);border-radius:16px;padding:14px 18px;min-width:120px;}
+.kpi b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;color:var(--rose-deep);line-height:1.1;}
+.kpi span{display:block;font-size:.74rem;font-weight:600;color:var(--ink-soft);margin-top:4px;}
+.case-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap;}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:.9rem;color:var(--ink-soft);margin-bottom:26px;}
+.back-link:hover{color:var(--ink);}
+
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px;}
+.shot{border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#fff;}
+.shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top center;}
+.shot figcaption{padding:12px 16px;font-size:.82rem;font-weight:600;color:var(--ink-soft);}
+.shots-note{margin-top:16px;font-size:.85rem;color:var(--ink-softer);}
+
+.section-sub{max-width:720px;color:var(--ink-soft);font-size:1.05rem;line-height:1.7;margin-bottom:34px;}
+.section-sub b{color:var(--ink);}
+
+.model-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.model-card{background:var(--card);border-radius:var(--radius-sm);padding:26px 26px;box-shadow:var(--shadow-sm);}
+.model-card h3{font-size:1.1rem;margin-bottom:10px;}
+.model-card p{font-size:.92rem;color:var(--ink-soft);line-height:1.6;}
+.model-card.accent{background:var(--ink);color:var(--cream);}
+.model-card.accent h3{color:var(--cream);}
+.model-card.accent p{color:rgba(253,246,240,.72);}
+.model-card.accent b{color:var(--blush);}
+
+.role-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.role-card{background:var(--card);border-radius:var(--radius-sm);padding:22px 20px;box-shadow:var(--shadow-sm);}
+.role-icon{width:40px;height:40px;border-radius:12px;background:var(--sand);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px;}
+.role-card h3{font-size:1rem;margin-bottom:8px;}
+.role-card ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.role-card li{font-size:.83rem;color:var(--ink-soft);line-height:1.45;display:flex;gap:8px;}
+.role-card li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--rose);flex:0 0 auto;margin-top:7px;}
+
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.feature{background:var(--card);border-radius:var(--radius-sm);padding:22px 22px 20px;box-shadow:var(--shadow-sm);}
+.feature h4{font-size:1rem;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.feature h4 span{font-size:1.1rem;}
+.feature p{font-size:.87rem;color:var(--ink-soft);line-height:1.55;}
+
+.arch{display:flex;flex-direction:column;gap:10px;}
+.arch-row{display:grid;gap:12px;}
+.arch-row.c2{grid-template-columns:1.4fr 1fr;}
+.arch-row.c3{grid-template-columns:1fr 1fr 1fr;}
+.arch-box{background:var(--card);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-sm);border:1px solid var(--line);}
+.arch-box b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:1rem;margin-bottom:4px;}
+.arch-box span{font-size:.8rem;color:var(--ink-soft);line-height:1.5;display:block;}
+.arch-box.dark{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+.arch-box.dark span{color:rgba(253,246,240,.7);}
+.arch-box.rose{background:linear-gradient(135deg,var(--blush),var(--sand));border-color:transparent;}
+.arch-arrow{text-align:center;color:var(--rose);font-size:1.3rem;line-height:1;}
+
+.hard-list{display:flex;flex-direction:column;gap:22px;}
+.hard-card{background:var(--card);border-radius:var(--radius);padding:30px 34px;box-shadow:var(--shadow);}
+.hard-head{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.hard-head h3{font-size:1.15rem;line-height:1.3;}
+.hard-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.hard-cols p{color:var(--ink-soft);font-size:.93rem;line-height:1.65;}
+
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
+.tl-step{background:var(--card);border-radius:var(--radius-sm);padding:20px 18px;box-shadow:var(--shadow-sm);position:relative;}
+.tl-num{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;color:var(--terracotta);font-size:.95rem;margin-bottom:10px;}
+.tl-step h4{font-size:.98rem;margin-bottom:6px;}
+.tl-step p{font-size:.83rem;color:var(--ink-soft);line-height:1.5;}
+
+.stat-grid.wide{grid-template-columns:repeat(4,1fr);}
+.stat-grid.wide .stat-card{text-align:left;}
+
+.honest{margin-top:30px;background:linear-gradient(135deg,var(--blush),var(--sand));border-radius:var(--radius);padding:28px 34px;font-size:1rem;line-height:1.7;color:var(--ink);}
+.honest b{color:var(--rose-deep);}
+
+@media (max-width:1100px){
+  .role-grid{grid-template-columns:repeat(2,1fr);}
+  .feature-grid{grid-template-columns:repeat(2,1fr);}
+  .timeline{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:920px){
+  .shots{grid-template-columns:1fr 1fr;}
+  .model-grid{grid-template-columns:1fr;}
+  .arch-row.c2,.arch-row.c3{grid-template-columns:1fr;}
+  .hard-cols{grid-template-columns:1fr;}
+  .stat-grid.wide{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:640px){
+  .case-hero{padding-top:120px;}
+  .shots{grid-template-columns:1fr;}
+  .role-grid,.feature-grid,.timeline{grid-template-columns:1fr;}
+  .hard-card{padding:24px 20px;}
+  .honest{padding:22px 20px;}
+  .kpi{min-width:calc(50% - 6px);}
+}
+</style>
+</head>
+<body>
+
+<div id="preloader">
+  <div class="loader-mark">ЭР</div>
+  <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+</div>
+
+<div class="bg-blobs"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<header id="siteHeader">
+  <a href="index.html" class="logo-mark">ЭР<span class="heart-css" style="--hs:9px"></span></a>
+  <nav class="desktop-nav">
+    <a href="index.html#about">Обо мне</a>
+    <a href="index.html#works">Работы</a>
+    <a href="index.html#cases">Кейсы</a>
+    <a href="index.html#services">Услуги</a>
+    <a href="index.html#contact">Контакты</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="Меню">
+    <span class="heart-css burger-heart"></span>
+    <span class="burger-x x1"></span>
+    <span class="burger-x x2"></span>
+  </button>
+</header>
+
+<div id="mobileMenu" role="dialog" aria-label="Меню сайта">
+  <button class="menu-close" id="menuClose" aria-label="Закрыть меню"><span></span><span></span></button>
+  <a href="index.html#about"><span class="heart-css" style="--hs:8px"></span>Обо мне</a>
+  <a href="index.html#works"><span class="heart-css" style="--hs:8px"></span>Работы</a>
+  <a href="index.html#cases"><span class="heart-css" style="--hs:8px"></span>Кейсы</a>
+  <a href="index.html#services"><span class="heart-css" style="--hs:8px"></span>Услуги</a>
+  <a href="index.html#contact"><span class="heart-css" style="--hs:8px"></span>Контакты</a>
+  <div class="menu-close-hint">нажми ✕ или Esc, чтобы закрыть</div>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="case-hero">
+  <a href="index.html#works" class="back-link reveal">← Ко всем работам</a>
+  <div class="case-kicker reveal">Кейс · учебная платформа · 2026</div>
+  <h1 class="case-title reveal">Alfa Z Platform: <em>учебная платформа</em> с контролем обучения</h1>
+  <p class="case-lede reveal">Школа программирования для подростков 12–17 лет продаёт занятия без потоков: каждый ученик стартует в свой день. Платформа ведёт его по личному графику, считает отставание, принимает ДЗ и тесты, начисляет баллы, следит за оплатой и пишет родителю в WhatsApp. Спроектирована и собрана с нуля одним человеком с ИИ-агентами; уже используется школой.</p>
+  <div class="kpi-row reveal">
+    <div class="kpi"><b>4</b><span>роли и матрица доступа</span></div>
+    <div class="kpi"><b>89</b><span>моделей в базе данных</span></div>
+    <div class="kpi"><b>11</b><span>фоновых задач</span></div>
+    <div class="kpi"><b>113</b><span>файлов с тестами</span></div>
+    <div class="kpi"><b>RU / KZ</b><span>интерфейс и курсы</span></div>
+  </div>
+  <div class="case-cta reveal">
+    <a href="https://platformalfa-z.kz/" class="btn btn-primary" target="_blank" rel="noopener">Открыть платформу ↗</a>
+    <a href="#arch" class="btn btn-ghost">Архитектура ↓</a>
+  </div>
+</section>
+
+<!-- ================= СКРИНШОТЫ ================= -->
+<section id="shots" style="padding-top:40px;">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--blush);top:0;right:-60px;"></div>
+  <div class="shots">
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-login.jpg" alt="Вход в платформу Alfa Z" loading="lazy" width="1200" height="750"><figcaption>Вход: email или телефон, RU / KK, тёмная тема</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson.jpg" alt="Урок по SQL внутри платформы" loading="lazy" width="1200" height="750"><figcaption>Урок бэкенд-курса: SQL, живые блоки, самопроверка</figcaption></figure>
+    <figure class="shot reveal"><div class="feat-win-bar"><i></i><i></i><i></i></div><img src="img/platform-lesson-2.jpg" alt="Урок курса CS50 внутри платформы" loading="lazy" width="1200" height="750"><figcaption>Урок курса CS50: своя палитра и форма у каждого урока</figcaption></figure>
+  </div>
+  <p class="shots-note reveal">Кабинеты ученика, куратора и админа — за авторизацией: показываю их на созвоне.</p>
+</section>
+
+<!-- ================= ЗАДАЧА ================= -->
+<section id="task">
+  <div class="blob-soft" style="width:220px;height:220px;background:var(--sand);bottom:0;left:-70px;animation-delay:-6s;"></div>
+  <div class="eyebrow reveal">Задача</div>
+  <h2 class="section-title reveal">Не витрина с видео, а <em>контроль обучения</em></h2>
+  <p class="section-sub reveal">Формат школы: записанные видеоуроки плюс две живые встречи в неделю в Discord. Набор <b>без потоков</b> — ребёнок начинает сразу после покупки. Прогресс индивидуальный: в одной группе ученики могут быть на 3-м и на 20-м уроке. Масштаб 200–1000 учеников до 18 лет, курсы параллельно на русском и казахском, простой учёт оплат без эквайринга.</p>
+  <div class="model-grid">
+    <div class="model-card reveal">
+      <h3>Что не умеют готовые LMS</h3>
+      <p>Считать личный график от даты старта каждого ученика и замечать, что он «встал», когда сравнивать не с кем. Знать про куратора, паузы, абонемент на занятия и родителя, которому надо написать в мессенджер.</p>
+    </div>
+    <div class="model-card accent reveal">
+      <h3>Главное архитектурное решение</h3>
+      <p><b>Запись на курс (Enrollment) — центральная сущность вместо потока.</b> Прогресс, ДЗ, посещаемость, оплата, стрик, лидерборд, паузы и сертификат привязаны к записи, а не к ученику. Один ребёнок на двух курсах — два независимых графика и два кошелька.</p>
+    </div>
+    <div class="model-card reveal">
+      <h3>Метрика, которой нет в потоке</h3>
+      <p>Отставание от личного графика: «по дате старта должен быть на уроке 12, фактически на 7-м». Это главный сигнал риска для куратора, и система обязана считать его сама.</p>
+    </div>
+    <div class="model-card reveal">
+      <h3>Принятые правила игры</h3>
+      <p>Мягкие дедлайны ДЗ (сдать можно, но за меньше баллов). Рейтинг за месяц с обнулением. Долг по оплате — льготный период, предупреждения родителю, потом блокировка. Абонемент продаёт восемь занятий, а не восемь дат.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= РОЛИ ================= -->
+<section id="roles">
+  <div class="eyebrow reveal">Роли</div>
+  <h2 class="section-title reveal">Четыре кабинета, <em>одна</em> правда</h2>
+  <p class="section-sub reveal">Роли множественные: один человек может совмещать. Каждая строка матрицы доступа проверяется на сервере, а не скрывается кнопкой в интерфейсе.</p>
+  <div class="role-grid">
+    <div class="role-card reveal"><div class="role-icon">🎒</div><h3>Ученик</h3><ul><li>Уроки по личному графику</li><li>ДЗ, тесты, разбор ошибок</li><li>Баллы, стрик, лидерборд группы</li><li>Своя посещаемость и оплаты</li><li>Сертификат по итогам курса</li></ul></div>
+    <div class="role-card reveal"><div class="role-icon">🧑‍🏫</div><h3>Преподаватель</h3><ul><li>Проверка ДЗ своей группы</li><li>Отметка посещаемости встреч</li><li>Объявления и вопросы к встрече</li><li>Отчёты по своим группам</li><li>Внутренние баллы за работу</li></ul></div>
+    <div class="role-card reveal"><div class="role-icon">🧭</div><h3>Куратор</h3><ul><li>Риск-флаги и отставание</li><li>Заметки, касания, данные родителя</li><li>Отчёт родителю и эскалация</li><li>Паузы графика, снятие блокировки</li><li>Запись на курс</li></ul></div>
+    <div class="role-card reveal"><div class="role-icon">🛠️</div><h3>Админ</h3><ul><li>Курсы, уроки, тесты, банк вопросов</li><li>Оплаты, тарифы, дата старта</li><li>Правила начисления баллов</li><li>Реестр доступов и аудит-лог</li><li>Вход от имени: только чтение, 30 минут, с журналом</li></ul></div>
+  </div>
+</section>
+
+<!-- ================= ЧТО ВНУТРИ ================= -->
+<section id="features">
+  <div class="blob-soft" style="width:260px;height:260px;background:var(--blush);top:10%;right:-80px;animation-delay:-4s;"></div>
+  <div class="eyebrow reveal">Что внутри</div>
+  <h2 class="section-title reveal">Функции, которые <em>работают</em> каждый день</h2>
+  <div class="feature-grid">
+    <div class="feature reveal"><h4><span>📅</span>Личный график</h4><p>Урок «день 14» открывается на 14-й день обучения конкретного ученика. Заморозка и блокировка ставят график на паузу, а не копят просрочки.</p></div>
+    <div class="feature reveal"><h4><span>📉</span>Отставание и риск-флаги</h4><p>Семь правил расчёта, дни пауз вычитаются ровно один раз и показываются куратору. Красный флаг — только при двух незавершённых уроках подряд.</p></div>
+    <div class="feature reveal"><h4><span>📝</span>ДЗ с мягкими дедлайнами</h4><p>Сдать можно позже, но за меньше баллов. Баллы — база плюс модификаторы, рецензия преподавателя с оценкой «понятно?» от ученика.</p></div>
+    <div class="feature reveal"><h4><span>🧪</span>Тесты и банк вопросов</h4><p>Пять типов вопросов, перемешивание по сиду, серверное время попытки. В зачёт идёт лучшая попытка, а не последняя. Ключи ответов физически не попадают на экран прохождения.</p></div>
+    <div class="feature reveal"><h4><span>🏆</span>Баллы, стрики, лидерборд</h4><p>Месячный рейтинг группы с обнулением и общий счёт отдельно. У недели три исхода: набрал, пропустил, нейтрально — каникулы не обнуляют стрик всей школе.</p></div>
+    <div class="feature reveal"><h4><span>💳</span>Оплаты и доступ</h4><p>Пять состояний платежа: оплачено, скоро, льгота, просрочка, блокировка. Долг по одному курсу не закрывает оплаченный другой. Абонемент считается занятиями.</p></div>
+    <div class="feature reveal"><h4><span>💬</span>Родителю в WhatsApp</h4><p>Отчёты по итогам месяца, предупреждения об оплате и лестница эскалации через Wazzup. Кабинета у родителя нет, и он ему не нужен.</p></div>
+    <div class="feature reveal"><h4><span>🔔</span>Уведомления</h4><p>Письма через Resend с очередью, Web Push в PWA на телефоне, объявления по школе, группе или своим ученикам, ежедневные напоминания.</p></div>
+    <div class="feature reveal"><h4><span>🧩</span>Редактор уроков и 43 мини-игры</h4><p>Урок — один блок HTML/CSS/JS в редакторе CodeMirror, рендер в песочнице. Генератор собирает оформление из сценария: палитра от номера урока, четыре формы шапки.</p></div>
+    <div class="feature reveal"><h4><span>🎓</span>Сертификаты</h4><p>Шаблоны у админа, выдача по итогам курса фоновой задачей, публичная страница проверки подлинности.</p></div>
+    <div class="feature reveal"><h4><span>🌐</span>RU / KZ</h4><p>Интерфейс двуязычный, казахские курсы существуют параллельно русским: переводится текст, а номера уроков и дедлайны общие.</p></div>
+    <div class="feature reveal"><h4><span>🧾</span>Аудит и удаление</h4><p>Каждое админское действие в журнале. Ученик никогда не стирается физически, согласие на обработку данных хранится с датой и версией текста.</p></div>
+  </div>
+</section>
+
+<!-- ================= АРХИТЕКТУРА ================= -->
+<section id="arch">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--sand);bottom:5%;left:-60px;animation-delay:-9s;"></div>
+  <div class="eyebrow reveal">Архитектура</div>
+  <h2 class="section-title reveal">Как это <em>устроено</em></h2>
+  <p class="section-sub reveal">Стек зафиксирован в правилах проекта, новые зависимости добавляются только если задачу нельзя закрыть тем, что есть. Все расчёты живут чистыми функциями в домене и покрыты тестами до появления в интерфейсе.</p>
+  <div class="arch reveal">
+    <div class="arch-row"><div class="arch-box rose"><b>Браузер и телефон · PWA</b><span>Ученик · Преподаватель · Куратор · Админ. Интерфейс на Tailwind + shadcn/ui, цвета только через токены, тёмная тема.</span></div></div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-row c2">
+      <div class="arch-box dark"><b>Next.js 15 · App Router · TypeScript strict</b><span>Серверные действия и API, Auth.js (email или телефон, приглашения, сброс пароля), next-intl, Zod-схемы, матрица доступа на сервере.</span></div>
+      <div class="arch-box dark"><b>Worker · pg-boss</b><span>11 фоновых задач: закрытие месяца, оплаты, риск-скоринг, отчёты и эскалация родителям, недельные баллы, сертификаты, очередь писем и уведомлений.</span></div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-row c3">
+      <div class="arch-box"><b>PostgreSQL · Prisma</b><span>89 моделей, 23 миграции. Деньги только Decimal, в расчётах целые тиыны. Время в UTC, бизнес-логика по Asia/Almaty.</span></div>
+      <div class="arch-box"><b>Файлы и видео</b><span>Сданные работы на диске сервера или в Cloudflare R2 по подписанным ссылкам. Видео — YouTube IFrame API с процентом досмотра.</span></div>
+      <div class="arch-box"><b>Внешние сервисы</b><span>Resend (письма), Web Push, Wazzup (WhatsApp родителям), Sentry с первого дня.</span></div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-row"><div class="arch-box"><b>Деплой · GitHub Actions → образ → Coolify на VPS (Docker)</b><span>Сервер образы только забирает. Приложение наружу не торчит, только через прокси. Скрипт бэкапов с проверкой восстановления, инструкция запуска написана для человека, а не для разработчика.</span></div></div>
+  </div>
+</section>
+
+<!-- ================= ЧТО БЫЛО СЛОЖНО ================= -->
+<section id="hard">
+  <div class="blob-soft" style="width:240px;height:240px;background:var(--blush);top:0;right:5%;animation-delay:-5s;"></div>
+  <div class="eyebrow reveal">Что было сложно</div>
+  <h2 class="section-title reveal">Ловушки, которые <em>не видно</em> в ТЗ</h2>
+  <div class="hard-list">
+    <article class="hard-card reveal">
+      <div class="hard-head"><span class="case-num">01</span><h3>Паузы пересекаются, и отставание считалось бы дважды</h3></div>
+      <div class="hard-cols">
+        <div><span class="case-label problem">Ловушка</span><p>Ученик бывает одновременно заморожен и заблокирован за долг. Если сложить длины пауз, дата открытия урока уедет вдвое дальше. А если вычесть паузы и при расчёте даты, и при расчёте отставания, отставание уполовинится.</p></div>
+        <div><span class="case-label solution">Как решено</span><p>Открытая пауза допускается одна на причину, а в расчёт идёт длина объединения интервалов. Дни пауз вычитаются ровно один раз, число вычтенных дней показывается куратору, иначе цифре перестают верить.</p></div>
+      </div>
+    </article>
+    <article class="hard-card reveal">
+      <div class="hard-head"><span class="case-num">02</span><h3>Долг по оплате не должен наказывать ребёнка дважды</h3></div>
+      <div class="hard-cols">
+        <div><span class="case-label problem">Ловушка</span><p>Отключили за долг, семья оплатила, ученик вернулся к просроченным дедлайнам и красной плашке «отстаёте на 30 дней». За долг родителя ребёнок не отвечает.</p></div>
+        <div><span class="case-label solution">Как решено</span><p>Блокировка — не статус, а вычисляемое состояние, и в той же транзакции она ставит график на паузу. Абонемент считается занятиями: прогул занятие не сжигает, справка снимает отработку.</p></div>
+      </div>
+    </article>
+    <article class="hard-card reveal">
+      <div class="hard-head"><span class="case-num">03</span><h3>Опечатка в вопросе теста и уже сданные попытки</h3></div>
+      <div class="hard-cols">
+        <div><span class="case-label problem">Ловушка</span><p>Исправили ключ ответа — и сотня прошлых попыток молча поменяла вердикт. У кого-то «не сдан» и «попыток не осталось» одновременно, дедлайн два месяца назад, эскалация родителю.</p></div>
+        <div><span class="case-label solution">Как решено</span><p>Правка создаёт заявку на пересчёт, применяет её только админ. Баллы меняются сторно плюс новое начисление, ученику уходит «было / стало», при понижении вердикта — новая попытка и новый срок. Пересчёт не наказывает: ошибку сделала платформа.</p></div>
+      </div>
+    </article>
+    <article class="hard-card reveal">
+      <div class="hard-head"><span class="case-num">04</span><h3>Уроки — это чужой HTML, а в сессии данные детей</h3></div>
+      <div class="hard-cols">
+        <div><span class="case-label problem">Ловушка</span><p>Урок пишется как свободный HTML/CSS/JS. Вставить его в страницу напрямую — открытая XSS-дыра рядом с персональными данными несовершеннолетних.</p></div>
+        <div><span class="case-label solution">Как решено</span><p>Урок рендерится в sandbox-iframe с отдельного роута без сессии и без allow-same-origin, ссылка на кадр подписана HMAC-токеном на 30 минут, CSP запрещает отправлять что-либо наружу. Загрузки проверяются по магическим байтам, SVG отвергается.</p></div>
+      </div>
+    </article>
+    <article class="hard-card reveal">
+      <div class="hard-head"><span class="case-num">05</span><h3>Двести уроков без ручной вёрстки и без ощущения «один урок, перекрашенный двенадцать раз»</h3></div>
+      <div class="hard-cols">
+        <div><span class="case-label problem">Ловушка</span><p>Верстать каждый урок руками — месяцы работы, а правка оформления превращается в правку двухсот файлов. Одна палитра на все уроки утомляет за неделю.</p></div>
+        <div><span class="case-label solution">Как решено</span><p>Генератор собирает урок из сценария: автор описывает смысл, а не вёрстку. Палитра считается от номера урока, у урока два цвета и одна из четырёх форм, сочетание повторяется только через 48 уроков. Контраст текста считается автоматически и проверяется тестом.</p></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= КАК ДЕЛАЛОСЬ ================= -->
+<section id="process">
+  <div class="eyebrow reveal">Как это делалось</div>
+  <h2 class="section-title reveal">Один человек, ИИ-агенты и <em>правила</em></h2>
+  <div class="timeline">
+    <div class="tl-step reveal"><div class="tl-num">01 · июль</div><h4>Техническое задание</h4><p>План продукта на 130 КБ: модель работы школы, все расчёты, матрица доступа. Главное решение — «потоков нет» — принято здесь.</p></div>
+    <div class="tl-step reveal"><div class="tl-num">02 · август</div><h4>Правила для агентов</h4><p>Файл правил проекта: стек, структура папок, что нельзя писать «на глаз», безопасность. Семнадцать решений, уточнивших ТЗ по ходу, записаны туда же.</p></div>
+    <div class="tl-step reveal"><div class="tl-num">03 · август–сентябрь</div><h4>Разработка с Claude Code</h4><p>Домен — чистыми функциями с тестами до интерфейса. Фазами: авторизация, курсы и уроки, ДЗ и тесты, баллы, оплаты, уведомления, WhatsApp.</p></div>
+    <div class="tl-step reveal"><div class="tl-num">04 · сентябрь</div><h4>Деплой и документация</h4><p>Docker, GitHub Actions, Coolify на VPS, бэкапы. Инструкция запуска написана для владельца школы: где юридический вопрос, а где технический.</p></div>
+    <div class="tl-step reveal"><div class="tl-num">05 · сентябрь</div><h4>Запуск</h4><p>Школа перешла на платформу, ученики учатся на ней. 134 коммита с 21 августа, правки по обратной связи продолжаются.</p></div>
+  </div>
+  <div class="stat-grid wide reveal" style="margin-top:30px;">
+    <div class="stat-card"><div class="stat-num">78k</div><div class="stat-label">строк TypeScript в приложении</div></div>
+    <div class="stat-card"><div class="stat-num">113</div><div class="stat-label">файлов с тестами: домен, доступ, дизайн-правила</div></div>
+    <div class="stat-card"><div class="stat-num">134</div><div class="stat-label">коммита за четыре недели</div></div>
+    <div class="stat-card"><div class="stat-num">86</div><div class="stat-label">оформленных уроков через генератор</div></div>
+  </div>
+  <div class="honest reveal">
+    <b>Честно про ИИ.</b> Код писали агенты под моим управлением: я проектировала модель данных и правила, ставила задачи, читала результат, ловила противоречия с ТЗ и возвращала на доработку. Правила проекта росли вместе с продуктом, и именно они позволили одному человеку удержать систему такого размера в целостности.
+  </div>
+</section>
+
+<!-- ================= КОНТАКТЫ ================= -->
+<section id="contact">
+  <div class="contact-card">
+    <div class="blob-soft" style="width:280px;height:280px;background:var(--rose);opacity:.28;top:-70px;left:-60px;"></div>
+    <div class="blob-soft" style="width:220px;height:220px;background:var(--terracotta);opacity:.22;bottom:-50px;right:-40px;animation-delay:-7s;"></div>
+    <div class="eyebrow reveal" style="justify-content:center;">Нужна такая же?</div>
+    <h2 class="section-title reveal">Платформа под <em>вашу</em> школу или продукт</h2>
+    <p class="reveal" style="color:rgba(253,246,240,.65);max-width:520px;margin:0 auto;">Расскажите, как устроено обучение у вас, — предложу модель данных и оценку сроков.</p>
+    <div class="contact-links reveal">
+      <a href="https://t.me/elleaa717?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%2C%20%D0%AD%D0%BB%D1%8C%D0%BD%D0%B0%D1%80%D0%B0%21%20%D0%9F%D0%B8%D1%88%D1%83%20%D1%81%20%D0%B2%D0%B0%D1%88%D0%B5%D0%B3%D0%BE%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0-%D0%BF%D0%BE%D1%80%D1%82%D1%84%D0%BE%D0%BB%D0%B8%D0%BE.%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%3A%20" target="_blank" rel="noopener" style="background:var(--rose);border-color:var(--rose);">✈ Написать в Telegram</a>
+      <a href="mailto:elnara.d.r02@gmail.com">✉ elnara.d.r02@gmail.com</a>
+      <a href="index.html#works">← Другие работы</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="signature" id="signature"><span class="dot"></span>Этот сайт сделан мной, вручную и с любовью — Эльнара, 2026</div>
+  <div class="footer-note">кликни на подпись ↑</div>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>
